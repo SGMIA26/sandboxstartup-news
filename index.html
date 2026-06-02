@@ -1,602 +1,465 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sandbox News — Kiến Thức M&A, Khởi Nghiệp & Đầu Tư</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --gold:#B8860B;--gold-light:#D4A017;
-  --ink:#1a1815;--ink-2:#3d3a35;--ink-3:#7a756e;
-  --paper:#faf8f4;--paper-2:#f2ede4;--paper-3:#e8e0d0;
-  --rule:#d4c9b0;
-}
-html{scroll-behavior:smooth}
-body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox News — Tạp chí Phân tích Tài chính & Doanh nghiệp</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
-/* MASTHEAD */
-.masthead{border-bottom:3px double var(--rule);padding:1.5rem 0 1rem;text-align:center}
-.masthead-eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.5rem}
-.masthead-logo{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
-.masthead-logo span{color:var(--gold)}
-.masthead-tagline{font-size:11px;letter-spacing:.15em;color:var(--ink-3);margin-top:.4rem;text-transform:uppercase}
-.masthead-date{font-size:11px;color:var(--ink-3);margin-top:.5rem}
+    <style>
+        :root {
+            --paper: #f4f1ea;
+            --ink: #111111;
+            --gold: #aa8439;
+            --border: #dcd7cc;
+            --tag-ma: #b85042;
+            --tag-dinhgia: #375e97;
+            --tag-holding: #4f3793;
+            --tag-thue: #3f6844;
+            --tag-thitruong: #e06317;
+            --tag-ipo: #026670;
+            --tag-startup: #98dbc6;
+        }
 
-/* NAV */
-.nav-bar{border-bottom:1px solid var(--rule)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;overflow-x:auto}
-.nav-item{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:.75rem 1.25rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
-.nav-item:hover{color:var(--ink);border-bottom-color:var(--gold)}
-.nav-item.active{color:var(--gold);border-bottom-color:var(--gold)}
-.nav-search{margin-left:auto;padding:.5rem 0}
-.nav-search input{font-size:12px;padding:.4rem .75rem;border:1px solid var(--rule);background:transparent;color:var(--ink);font-family:'DM Sans',sans-serif;width:160px;outline:none}
-.nav-search input:focus{border-color:var(--gold)}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
 
-/* TICKER */
-.ticker{background:var(--ink);color:#f5f0e8;padding:.5rem 0;overflow:hidden;font-size:11px;letter-spacing:.08em}
-.ticker-wrap{display:flex;align-items:center;gap:2rem;animation:ticker 50s linear infinite}
-.ticker-label{background:var(--gold);color:var(--ink);font-weight:700;font-size:10px;letter-spacing:.15em;padding:.2rem .6rem;white-space:nowrap;flex-shrink:0}
-.ticker-item{white-space:nowrap;opacity:.85}
-.ticker-item::after{content:'·';margin-left:2rem;opacity:.4}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        /* Header & Navigation */
+        header { border-bottom: 4px double var(--ink); padding: 20px 0; text-align: center; background: var(--paper); }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--ink); text-decoration: none; }
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; margin-top: 20px; overflow-x: auto; white-space: nowrap; }
+        .tab-btn { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; cursor: pointer; padding: 5px 10px; color: #555; transition: all 0.3s; }
+        .tab-btn.active, .tab-btn:hover { color: var(--ink); font-weight: 700; border-bottom: 2px solid var(--ink); }
 
-/* LAYOUT */
-.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+        /* Ticker Wrap */
+        .ticker-wrap { background: var(--ink); color: #fff; padding: 10px 0; overflow: hidden; position: relative; }
+        .ticker { display: flex; white-space: nowrap; animation: ticker 25s linear infinite; }
+        .ticker:hover { animation-play-state: paused; }
+        .ticker-item { padding: 0 30px; font-size: 0.85rem; text-transform: uppercase; font-weight: 500; cursor: pointer; }
+        .ticker-item:hover { color: var(--gold); }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-/* HERO */
-.hero{border-bottom:1px solid var(--rule);padding:2.5rem 0}
-.hero-grid{display:grid;grid-template-columns:1fr 300px;gap:0}
-.hero-main{padding-right:2.5rem;border-right:1px solid var(--rule)}
-.hero-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--paper-3);margin-bottom:1rem}
-.hero-thumb-ph{width:100%;aspect-ratio:16/9;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:11px;letter-spacing:.1em;margin-bottom:1rem}
-.hero-side{padding-left:2rem}
-.side-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);padding-bottom:.75rem;border-bottom:2px solid var(--ink);margin-bottom:1.25rem}
-.side-story{padding-bottom:1.25rem;margin-bottom:1.25rem;border-bottom:1px solid var(--rule)}
-.side-story:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.side-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--rule);line-height:1;margin-bottom:.25rem}
-.side-cat{font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
-.side-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;line-height:1.35;cursor:pointer;transition:color .2s}
-.side-title:hover{color:var(--gold)}
-.side-meta{font-size:10px;color:var(--ink-3);margin-top:.3rem}
+        /* Main Layout Grid */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .magazine-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 40px; }
+        
+        /* Hero Big Post */
+        .hero-post { cursor: pointer; border-right: 1px solid var(--border); padding-right: 40px; }
+        .hero-post img { width: 100%; max-height: 400px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 15px; }
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 15px; }
+        .hero-excerpt { color: #444; font-size: 1.05rem; margin-bottom: 15px; }
 
-/* BADGES */
-.badge{display:inline-block;font-size:9px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid;margin-bottom:.6rem}
-.badge-ma{color:#993C1D;border-color:#993C1D;background:#FAECE7}
-.badge-dinh-gia{color:#085041;border-color:#085041;background:#E1F5EE}
-.badge-holding{color:#26215C;border-color:#26215C;background:#EEEDFE}
-.badge-thue{color:#4A1B0C;border-color:#4A1B0C;background:#FAECE7}
-.badge-thi-truong{color:#173404;border-color:#173404;background:#EAF3DE}
-.badge-ipo{color:#042C53;border-color:#042C53;background:#E6F1FB}
-.badge-startup{color:#3d2800;border-color:#BA7517;background:#FAEEDA}
-.badge-case{color:#26215C;border-color:#534AB7;background:#EEEDFE}
-.badge-finance{color:#042C53;border-color:#185FA5;background:#E6F1FB}
+        /* Top Side Posts */
+        .side-posts { display: flex; flex-direction: column; gap: 25px; }
+        .side-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
+        .side-item { display: flex; gap: 15px; cursor: pointer; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
+        .side-item img { width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--border); }
+        .side-item-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
 
-/* HERO TEXT */
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;line-height:1.2;letter-spacing:-.02em;cursor:pointer;transition:color .2s;margin-bottom:.75rem}
-.hero-title:hover{color:var(--gold)}
-.hero-excerpt{font-size:14px;color:var(--ink-2);line-height:1.7;font-weight:300;margin-bottom:1rem}
-.hero-meta{display:flex;align-items:center;gap:1rem;font-size:11px;color:var(--ink-3)}
-.hero-meta .sep{opacity:.3}
-.hero-readmore{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);cursor:pointer;transition:opacity .2s;margin-top:1rem;display:inline-block}
-.hero-readmore:hover{opacity:.6}
+        /* Bottom Grid */
+        .grid-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 5px; margin-top: 5px; margin-bottom: 25px; text-transform: uppercase; }
+        .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .grid-item { cursor: pointer; background: transparent; transition: transform 0.2s; }
+        .grid-item:hover { transform: translateY(-3px); }
+        .grid-item img { width: 100%; height: 200px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 12px; }
+        .grid-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+        .grid-excerpt { font-size: 0.9rem; color: #555; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* SECTION HEAD */
-.section-head{display:flex;align-items:center;gap:1rem;margin:2.5rem 0 1.5rem}
-.section-head-thick{height:2px;background:var(--ink);width:40px;flex:none}
-.section-head-label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
-.section-head-line{flex:1;height:1px;background:var(--rule)}
+        /* Badges & Meta */
+        .badge { display: inline-block; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #fff; border-radius: 2px; margin-bottom: 8px; }
+        .badge-ma { background: var(--tag-ma); }
+        .badge-dinh-gia { background: var(--tag-dinhgia); }
+        .badge-holding { background: var(--tag-holding); }
+        .badge-thue { background: var(--tag-thue); }
+        .badge-thi-truong { background: var(--tag-thitruong); }
+        .badge-ipo { background: var(--tag-ipo); }
+        .badge-startup { background: var(--tag-startup); }
+        .badge-case { background: var(--ink); }
+        .meta-date { font-size: 0.75rem; color: #777; margin-bottom: 5px; text-transform: uppercase; }
 
-/* ARTICLE GRID */
-.art-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule)}
-.art-card{padding:1.5rem 1.5rem 1.5rem 0;border-bottom:1px solid var(--rule);cursor:pointer}
-.art-card:nth-child(3n){padding-right:0}
-.art-card:nth-child(3n-1){padding-left:1.5rem;border-left:1px solid var(--rule);border-right:1px solid var(--rule)}
-.art-card:nth-child(3n-2){padding-left:0}
-.art-thumb{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;background:var(--paper-3);margin-bottom:.75rem}
-.art-thumb-ph{width:100%;aspect-ratio:3/2;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:10px;margin-bottom:.75rem}
-.art-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;line-height:1.35;margin-bottom:.5rem;transition:color .2s}
-.art-card:hover .art-title{color:var(--gold)}
-.art-excerpt{font-size:12px;color:var(--ink-2);line-height:1.6;font-weight:300;margin-bottom:.75rem}
-.art-meta{font-size:10px;color:var(--ink-3);display:flex;gap:.75rem;align-items:center}
-.art-source{font-size:10px;color:var(--gold);font-weight:500}
-.art-type-badge{font-size:9px;background:var(--paper-3);color:var(--ink-3);padding:.15rem .5rem;border-radius:2px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+        /* Modal View Base */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
+        .modal.active { display: block; }
+        .modal-content { background: var(--paper); max-width: 800px; margin: 0 auto; padding: 40px; border: 1px solid var(--border); position: relative; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: #666; }
+        .close-modal:hover { color: var(--ink); }
+        .markdown-body { font-size: 1.1rem; line-height: 1.7; color: #222; margin-top: 20px; }
+        .markdown-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: 25px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .markdown-body p { margin-bottom: 15px; text-align: justify; }
 
-/* CASES SECTION */
-.case-card{display:grid;grid-template-columns:120px 1fr;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid var(--rule);cursor:pointer}
-.case-card:hover .case-title{color:var(--gold)}
-.case-thumb-sm{width:120px;height:80px;object-fit:cover;background:var(--paper-3);flex-shrink:0}
-.case-thumb-ph{width:120px;height:80px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-3);flex-shrink:0}
-.case-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;line-height:1.35;margin:.4rem 0}
-.case-excerpt{font-size:12px;color:var(--ink-2);line-height:1.6;font-weight:300}
-.case-meta{font-size:10px;color:var(--ink-3);margin-top:.4rem;display:flex;gap:.75rem}
-
-/* EXPERT STRIP */
-.expert-strip{background:var(--ink);color:var(--paper);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem}
-.expert-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
-.expert-quote{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;line-height:1.5;color:#f5f0e8}
-.expert-author{font-size:10px;letter-spacing:.1em;color:#9a9590;margin-top:.6rem;text-transform:uppercase}
-
-/* CTA */
-.cta-bar{background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:1.5rem 0;margin:2.5rem 0}
-.cta-inner{display:flex;align-items:center;gap:2rem}
-.cta-text{flex:1}
-.cta-label{font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem}
-.cta-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink)}
-.cta-sub{font-size:13px;color:var(--ink-3);font-weight:300}
-.cta-btns{display:flex;gap:.75rem;flex-shrink:0}
-.btn-dark{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.75rem 1.5rem;background:var(--ink);color:var(--paper);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
-.btn-dark:hover{background:var(--gold)}
-.btn-outline{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.75rem 1.5rem;background:transparent;color:var(--ink);border:1px solid var(--ink);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.btn-outline:hover{background:var(--ink);color:var(--paper)}
-
-/* FOOTER */
-.footer{border-top:3px double var(--rule);padding:2rem 0;margin-top:3rem;text-align:center}
-.footer-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--ink)}
-.footer-logo span{color:var(--gold)}
-.footer-links{display:flex;justify-content:center;gap:2rem;margin:1rem 0;flex-wrap:wrap}
-.footer-link{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);cursor:pointer;transition:color .2s}
-.footer-link:hover{color:var(--gold)}
-.footer-sandbox{margin:1.25rem auto;padding:1rem 2rem;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:inline-flex;align-items:center;gap:1rem}
-.footer-sandbox-label{font-size:9px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.2rem}
-.footer-sandbox-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink)}
-.footer-sandbox-email{font-size:11px;color:var(--gold)}
-.footer-copy{font-size:11px;color:var(--ink-3)}
-
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(26,24,21,.88);z-index:1000;display:none;overflow-y:auto;padding:2rem 1rem}
-.modal-overlay.open{display:block}
-.modal{background:var(--paper);max-width:780px;margin:0 auto;padding:0;position:relative}
-.modal-close{position:fixed;top:1.5rem;right:1.5rem;font-size:20px;cursor:pointer;color:#fff;background:rgba(0,0,0,.5);border:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;z-index:1001}
-.modal-close:hover{background:rgba(0,0,0,.8)}
-.modal-hero-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--paper-3)}
-.modal-hero-ph{width:100%;aspect-ratio:16/9;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:12px;letter-spacing:.1em}
-.modal-body-wrap{padding:2.5rem 3rem}
-.modal-cat{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;line-height:1.25;letter-spacing:-.01em;margin-bottom:1rem}
-.modal-meta-bar{display:flex;align-items:center;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);margin-bottom:1.5rem;font-size:11px;color:var(--ink-3);flex-wrap:wrap}
-.modal-source-link{color:var(--gold);text-decoration:none;font-weight:500}
-.modal-source-link:hover{text-decoration:underline}
-
-/* Article body rendering */
-.article-body{font-size:16px;line-height:1.8;color:var(--ink-2);font-weight:300}
-.article-body h1,.article-body h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink);margin:2rem 0 .75rem;padding-left:1rem;border-left:3px solid var(--gold);letter-spacing:-.01em}
-.article-body h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--gold);margin:1.5rem 0 .5rem}
-.article-body p{margin-bottom:1.25rem}
-.article-body strong,.article-body b{font-weight:500;color:var(--ink)}
-.article-body em,.article-body i{font-style:italic}
-.article-body ul,.article-body ol{margin:.75rem 0 1.25rem 1.5rem}
-.article-body li{margin-bottom:.4rem}
-.article-body blockquote{border-left:3px solid var(--gold);padding:.75rem 1.25rem;margin:1.5rem 0;background:var(--paper-2);font-style:italic;color:var(--ink-2)}
-
-/* Insight box */
-.insight-box{background:var(--paper-2);border-left:3px solid var(--gold);padding:1rem 1.25rem;margin:1.5rem 0}
-.insight-label{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
-.insight-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;line-height:1.6;color:var(--ink-2)}
-
-/* Share bar */
-.share-bar{display:flex;align-items:center;gap:1rem;padding:1.25rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:2rem 0}
-.share-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.share-btn{display:flex;align-items:center;gap:.4rem;font-size:12px;font-weight:500;padding:.5rem 1rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
-.share-btn:hover{opacity:.8}
-.share-fb{background:#1877F2;color:#fff}
-.share-copy{background:var(--paper-3);color:var(--ink)}
-
-/* Comments section */
-.comments-section{margin:2rem 0}
-.comments-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--ink)}
-.comments-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700}
-.comments-count{font-size:12px;color:var(--ink-3)}
-.ai-comments{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
-.ai-comment{background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.25rem;border-radius:0}
-.ai-comment-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem}
-.ai-avatar{width:32px;height:32px;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;flex-shrink:0;border-radius:50%}
-.ai-name{font-size:13px;font-weight:500;color:var(--ink)}
-.ai-time{font-size:11px;color:var(--ink-3)}
-.ai-text{font-size:13px;color:var(--ink-2);line-height:1.6;font-weight:300}
-.comment-cta{background:var(--ink);color:var(--paper);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.comment-cta-text{font-size:14px;font-weight:300}
-.comment-cta-text strong{font-weight:500}
-.comment-cta-btn{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.6rem 1.25rem;background:var(--gold);color:var(--ink);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .2s}
-.comment-cta-btn:hover{opacity:.8}
-
-/* Source credit */
-.source-credit{font-size:12px;color:var(--ink-3);padding:.75rem 0;border-top:1px solid var(--rule)}
-
-/* Loading */
-.loading-ph{background:var(--paper-2);animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.5}}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .hero-grid,.art-grid{grid-template-columns:1fr}
-  .hero-main{padding-right:0;border-right:none;border-bottom:1px solid var(--rule);padding-bottom:1.5rem}
-  .hero-side{padding-left:0;padding-top:1.5rem}
-  .art-card,.art-card:nth-child(3n),.art-card:nth-child(3n-1),.art-card:nth-child(3n-2){padding:1.25rem 0;border-left:none;border-right:none}
-  .expert-strip{grid-template-columns:1fr}
-  .cta-inner{flex-direction:column;text-align:center}
-  .masthead-logo{font-size:32px}
-  .modal-body-wrap{padding:1.5rem}
-  .modal-title{font-size:22px}
-}
-</style>
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .magazine-layout { grid-template-columns: 1fr; gap: 30px; }
+            .hero-post { border-right: none; padding-right: 0; }
+            .article-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- TICKER -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-wrap" id="tickerWrap">
-    <span class="ticker-label">TIN MỚI</span>
-    <span class="ticker-item">Làn sóng M&A ngành F&B 2026 tăng mạnh với nhà đầu tư Nhật, Hàn</span>
-    <span class="ticker-item">IPO Việt Nam Q2/2026: 12 doanh nghiệp đăng ký niêm yết</span>
-    <span class="ticker-item">Holding company — xu hướng tái cơ cấu SME phổ biến nhất 2026</span>
-    <span class="ticker-item">EV/EBITDA bình quân ngành bán lẻ VN đạt 7.2x trong quý 1/2026</span>
-    <span class="ticker-item">Làn sóng M&A ngành F&B 2026 tăng mạnh với nhà đầu tư Nhật, Hàn</span>
-    <span class="ticker-item">IPO Việt Nam Q2/2026: 12 doanh nghiệp đăng ký niêm yết</span>
-    <span class="ticker-item">Holding company — xu hướng tái cơ cấu SME phổ biến nhất 2026</span>
-    <span class="ticker-item">EV/EBITDA bình quân ngành bán lẻ VN đạt 7.2x trong quý 1/2026</span>
-  </div>
-</div>
-
-<!-- MASTHEAD -->
-<div class="masthead">
-  <div class="masthead-eyebrow">The Sandbox Entrepreneurs Vietnam</div>
-  <div class="masthead-logo">SANDBOX<span>.</span>NEWS</div>
-  <div class="masthead-tagline">M&A · Khởi Nghiệp · Đầu Tư · Công Nghệ · Tài Chính</div>
-  <div class="masthead-date" id="mastDate"></div>
-</div>
-
-<!-- NAV -->
-<div class="nav-bar">
-  <div class="nav-inner">
-    <span class="nav-item active" data-filter="all" data-type="news">Tất cả</span>
-    <span class="nav-item" data-filter="ma" data-type="news">M&A</span>
-    <span class="nav-item" data-filter="dinh-gia" data-type="news">Định giá</span>
-    <span class="nav-item" data-filter="holding" data-type="news">Holding</span>
-    <span class="nav-item" data-filter="thue" data-type="news">Thuế & Pháp lý</span>
-    <span class="nav-item" data-filter="thi-truong" data-type="news">Thị trường</span>
-    <span class="nav-item" data-filter="ipo" data-type="news">IPO</span>
-    <span class="nav-item" data-filter="startup" data-type="news">Startup</span>
-    <span class="nav-item" data-filter="case" data-type="case">📚 Case Study</span>
-    <div class="nav-search"><input type="text" placeholder="Tìm kiếm..." id="searchInput"></div>
-  </div>
-</div>
-
-<div class="container">
-  <div id="heroSection" style="padding:2rem 0;text-align:center;color:var(--ink-3);font-size:13px;letter-spacing:.1em;border-bottom:1px solid var(--rule)">ĐANG TẢI BÀI VIẾT...</div>
-  
-  <div class="expert-strip">
-    <div><div class="expert-label">Góc chuyên gia</div><div class="expert-quote">"Định giá đúng là bước đầu tiên để bảo vệ quyền lợi chủ doanh nghiệp trong mọi thương vụ M&A."</div><div class="expert-author">— Ban Biên tập Sandbox</div></div>
-    <div><div class="expert-label">Số liệu thị trường</div><div class="expert-quote">"7/10 thương vụ M&A thất bại vì người bán chưa chuẩn bị hồ sơ pháp lý và định giá đúng."</div><div class="expert-author">— Báo cáo M&A Việt Nam 2025</div></div>
-    <div><div class="expert-label">Lời khuyên</div><div class="expert-quote">"Cấu trúc Holding không chỉ tối ưu thuế — đó là nền tảng để gọi vốn chuyên nghiệp và minh bạch."</div><div class="expert-author">— Chuyên gia tư vấn Sandbox</div></div>
-  </div>
-
-  <div class="section-head">
-    <div class="section-head-thick"></div>
-    <div class="section-head-label" id="sectionLabel">Bài viết mới nhất</div>
-    <div class="section-head-line"></div>
-  </div>
-  <div id="articleGrid" class="art-grid"></div>
-
-  <div id="casesSection" style="display:none">
-    <div class="section-head" style="margin-top:2.5rem">
-      <div class="section-head-thick"></div>
-      <div class="section-head-label">Case Study chuyên sâu</div>
-      <div class="section-head-line"></div>
-    </div>
-    <div id="casesList"></div>
-  </div>
-
-  <div class="cta-bar">
-    <div class="cta-inner">
-      <div class="cta-text">
-        <div class="cta-label">Công cụ miễn phí</div>
-        <div class="cta-title">Doanh nghiệp bạn trị giá bao nhiêu?</div>
-        <div class="cta-sub">Định giá sơ bộ trong 5 phút — theo chuẩn Thông tư 36/2024</div>
-      </div>
-      <div class="cta-btns">
-        <button class="btn-outline" onclick="window.open('https://consult.sandboxstartup.vn','_blank')">Tư vấn cấu trúc</button>
-        <button class="btn-dark" onclick="window.open('https://valuitbiz.sandboxstartup.vn','_blank')">Định giá ngay →</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  <div class="footer-logo">SANDBOX<span>.</span>NEWS</div>
-  <div class="footer-links">
-    <span class="footer-link">M&A</span>
-    <span class="footer-link">Định giá</span>
-    <span class="footer-link">Holding</span>
-    <span class="footer-link">IPO</span>
-    <span class="footer-link">Tư vấn</span>
-    <span class="footer-link" onclick="window.location='mailto:news@sandboxstartup.vn'">Liên hệ</span>
-  </div>
-  <div class="footer-sandbox">
-    <div>
-      <div class="footer-sandbox-label">Một sản phẩm của</div>
-      <div class="footer-sandbox-name">The Sandbox Entrepreneurs Vietnam</div>
-      <div style="display:flex;gap:1rem;margin-top:.25rem">
-        <a href="mailto:news@sandboxstartup.vn" class="footer-sandbox-email">news@sandboxstartup.vn</a>
-        <a href="mailto:sandboxcrowdfund@gmail.com" class="footer-sandbox-email" style="color:var(--ink-3)">sandboxcrowdfund@gmail.com</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-copy">© 2026 Sandbox News · The Sandbox Entrepreneurs Vietnam · Bảo lưu mọi quyền.</div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()" aria-label="Đóng">✕</button>
-    <div id="modalThumb"></div>
-    <div class="modal-body-wrap">
-      <div class="modal-cat" id="modalCat"></div>
-      <div class="modal-title" id="modalTitle"></div>
-      <div class="modal-meta-bar" id="modalMeta"></div>
-      <div class="article-body" id="modalBody"></div>
-      <div class="insight-box" id="modalInsight" style="display:none">
-        <div class="insight-label">Góc nhìn Sandbox</div>
-        <div class="insight-text" id="modalInsightText"></div>
-      </div>
-      <!-- SHARE -->
-      <div class="share-bar">
-        <span class="share-label">Chia sẻ:</span>
-        <button class="share-btn share-fb" id="shareFbBtn" onclick="shareFacebook()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          Facebook
-        </button>
-        <button class="share-btn share-copy" onclick="copyLink()">🔗 Copy link</button>
-      </div>
-      <!-- AI COMMENTS -->
-      <div class="comments-section">
-        <div class="comments-header">
-          <div class="comments-title">Ý kiến độc giả</div>
-          <div class="comments-count" id="commentsCount">3 bình luận</div>
+    <header>
+        <a href="#" class="logo" onclick="changeCategory('all')">Sandbox News</a>
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="tab-all" onclick="changeCategory('all')">Tất cả</button>
+            <button class="tab-btn" id="tab-ma" onclick="changeCategory('ma')">M&A</button>
+            <button class="tab-btn" id="tab-dinh-gia" onclick="changeCategory('dinh-gia')">Định giá</button>
+            <button class="tab-btn" id="tab-holding" onclick="changeCategory('holding')">Holding</button>
+            <button class="tab-btn" id="tab-thue" onclick="changeCategory('thue')">Thuế & Pháp lý</button>
+            <button class="tab-btn" id="tab-thi-truong" onclick="changeCategory('thi-truong')">Thị trường</button>
+            <button class="tab-btn" id="tab-ipo" onclick="changeCategory('ipo')">IPO</button>
+            <button class="tab-btn" id="tab-startup" onclick="changeCategory('startup')">Startup</button>
+            <button class="tab-btn" id="tab-case" onclick="changeCategory('case')">📚 Case Study</button>
         </div>
-        <div class="ai-comments" id="aiComments"></div>
-        <div class="comment-cta">
-          <div class="comment-cta-text">Bạn có <strong>ý kiến</strong> về bài viết này?</div>
-          <button class="comment-cta-btn" onclick="openCommentForm()">💬 Bình luận & Ý kiến</button>
+    </header>
+
+    <div class="ticker-wrap">
+        <div class="ticker" id="tickerWrap">
+            <!-- Dòng chữ chạy được Render tự động qua JS -->
+            <div class="ticker-item">Đang kết nối kho dữ liệu hệ thống Sandbox News...</div>
         </div>
-      </div>
-      <div class="source-credit" id="modalSource"></div>
     </div>
-  </div>
-</div>
 
-<script>
-const SHEETS_API = 'https://script.google.com/macros/s/AKfycbwKSB_5Ow2hVR8ROwLpINNLFXd1vlBcP1AWGZiVnLqbVKT3pXH1X7QglIUxcRT1UajRmw/exec';
-let ALL_ARTICLES = [];
-let currentFilter = 'all';
-let currentType = 'news';
-let currentSearch = '';
-let currentArticle = null;
-
-const TAG_LABEL = {ma:'M&A','dinh-gia':'Định giá',holding:'Holding',thue:'Thuế & Pháp lý','thi-truong':'Thị trường',ipo:'IPO',startup:'Startup',case:'Case Study',finance:'Tài chính'};
-const BADGE_CLASS = {ma:'badge-ma','dinh-gia':'badge-dinh-gia',holding:'badge-holding',thue:'badge-thue','thi-truong':'badge-thi-truong',ipo:'badge-ipo',startup:'badge-startup',case:'badge-case',finance:'badge-finance'};
-
-const AI_NAMES = ['Nguyễn Minh Tuấn','Trần Thị Lan','Lê Văn Hùng','Phạm Thu Hà','Đỗ Quốc Bảo','Vũ Thị Mai','Hoàng Anh Dũng','Bùi Thanh Thảo','Ngô Văn Long','Đinh Thị Ngọc'];
-const AI_COMMENTS_POOL = [
-  'Bài viết rất sâu sắc và thực tiễn. Đây chính xác là loại thông tin mà chúng tôi cần khi chuẩn bị gọi vốn.',
-  'Phân tích rất chuyên nghiệp. Tôi sẽ chia sẻ ngay với nhóm lãnh đạo của công ty.',
-  'Cảm ơn Sandbox đã đưa ra góc nhìn thực tế như vậy. Bài học rất hữu ích cho doanh nghiệp vừa.',
-  'Đây là góc nhìn tôi cần. Đang chuẩn bị cho thương vụ M&A và bài này giải đáp nhiều thắc mắc.',
-  'Nội dung chất lượng cao, đặc biệt phần phân tích số liệu rất cụ thể và dễ hiểu.',
-  'Sandbox luôn có những bài phân tích đỉnh. Theo dõi lâu rồi và chưa thất vọng lần nào.',
-  'Rất bổ ích! Tôi đang trong quá trình tái cơ cấu doanh nghiệp và bài này cho tôi thêm nhiều insight.',
-  'Góc nhìn về Holding rất thực tế. Hiếm có nơi nào ở Việt Nam phân tích kỹ như thế này.',
-];
-
-function getRandomComments(n=3){
-  const shuffled = [...AI_NAMES].sort(()=>Math.random()-.5);
-  const comments = [...AI_COMMENTS_POOL].sort(()=>Math.random()-.5);
-  return Array.from({length:n},(_,i)=>({
-    name: shuffled[i],
-    initial: shuffled[i][0],
-    text: comments[i],
-    time: `${Math.floor(Math.random()*23)+1} giờ trước`
-  }));
-}
-
-function markdownToHtml(text){
-  if(!text) return '';
-  return text
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/^---$/gm,'<hr style="border:none;border-top:1px solid var(--rule);margin:1.5rem 0">')
-    .replace(/\n\n/g,'</p><p>')
-    .replace(/^(?!<[h|p|h|u|o|b|e|s])/gm,'')
-    .split('\n').map(l=>l.trim()).filter(Boolean)
-    .map(l=>l.startsWith('<')?l:`<p>${l}</p>`)
-    .join('');
-}
-
-function badgeHtml(tag){ return `<span class="badge ${BADGE_CLASS[tag]||'badge-ma'}">${TAG_LABEL[tag]||tag}</span>`; }
-function thumbHtml(url,cls){ return url?`<img class="${cls}" src="${url}" alt="" onerror="this.style.display='none'">`:`<div class="${cls}-ph">SANDBOX NEWS</div>`; }
-
-document.getElementById('mastDate').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
-
-// NAV
-document.querySelectorAll('.nav-item[data-filter]').forEach(el=>{
-  el.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    el.classList.add('active');
-    currentFilter = el.dataset.filter;
-    currentType = el.dataset.type;
-    applyFilters();
-  });
-});
-document.getElementById('searchInput').addEventListener('input',e=>{
-  currentSearch = e.target.value.toLowerCase().trim();
-  applyFilters();
-});
-
-function getFiltered(){
-  return ALL_ARTICLES.filter(a=>{
-    const type = a.type || 'news';
-    const matchType = currentType==='case' ? type==='case' : type!=='case';
-    const matchFilter = currentFilter==='all' || a.tag===currentFilter || (currentFilter==='case'&&type==='case');
-    const matchQ = !currentSearch || (a.title||'').toLowerCase().includes(currentSearch) || (a.excerpt||'').toLowerCase().includes(currentSearch);
-    return matchType && matchFilter && matchQ;
-  });
-}
-
-function applyFilters(){
-  const filtered = getFiltered();
-  const newsItems = filtered.filter(a=>(a.type||'news')!=='case');
-  const caseItems = filtered.filter(a=>a.type==='case');
-  const showingCases = currentType==='case';
-
-  document.getElementById('sectionLabel').textContent = showingCases ? 'Case Study chuyên sâu' : (currentFilter==='all'?'Bài viết mới nhất':TAG_LABEL[currentFilter]||'Bài viết');
-
-  if(showingCases){
-    renderCases(caseItems);
-    document.getElementById('articleGrid').innerHTML='';
-    document.getElementById('heroSection').style.display='none';
-    document.getElementById('casesSection').style.display='block';
-  } else {
-    document.getElementById('casesSection').style.display='none';
-    document.getElementById('heroSection').style.display='';
-    renderHero(newsItems);
-    renderGrid(newsItems);
-  }
-}
-
-function renderHero(articles){
-  const hero = document.getElementById('heroSection');
-  if(!articles.length){ hero.innerHTML='<div style="padding:2rem 0;text-align:center;color:var(--ink-3);font-size:13px">Chưa có bài viết cho chủ đề này.</div>'; return; }
-  const a = articles[0];
-  const sides = articles.slice(1,4);
-  hero.innerHTML=`
-    <div class="hero" style="padding:2.5rem 0">
-      <div class="hero-grid">
-        <div class="hero-main">
-          ${thumbHtml(a.imageUrl,'hero-thumb')}
-          ${badgeHtml(a.tag)}
-          <div class="hero-title" onclick="openModal('${a.slug}')">${a.title||''}</div>
-          <div class="hero-excerpt">${a.excerpt||''}</div>
-          <div class="hero-meta"><span>${a.date||''}</span><span class="sep">·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span class="sep">·</span><span style="color:var(--gold);font-size:10px">${a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]}</span>`:''}</div>
-          <span class="hero-readmore" onclick="openModal('${a.slug}')">Đọc bài viết →</span>
+    <div class="container">
+        <!-- Vùng hiển thị Trang chủ (Tin Nổi Bật + Đọc Nhiều) -->
+        <div id="featuredSection" class="magazine-layout">
+            <div id="heroPostContainer"></div>
+            <div class="side-posts">
+                <h3 class="side-heading">Đọc nhiều nhất</h3>
+                <div id="sidePostsContainer"></div>
+            </div>
         </div>
-        <div class="hero-side">
-          <div class="side-label">Đọc nhiều nhất</div>
-          ${sides.map((s,i)=>`<div class="side-story"><div class="side-num">0${i+1}</div><div class="side-cat">${TAG_LABEL[s.tag]||s.tag}</div><div class="side-title" onclick="openModal('${s.slug}')">${s.title||''}</div><div class="side-meta">${s.date||''} · ${s.readTime||''}</div></div>`).join('')}
+
+        <!-- Khung Lưới Tin Tức -->
+        <h3 class="grid-heading" id="sectionTitle">Tin tức mới cập nhật</h3>
+        <div class="article-grid" id="articleGrid"></div>
+    </div>
+
+    <!-- Cấu trúc Modal xem chi tiết bài viết -->
+    <div id="articleModal" class="modal" onclick="if(event.target==this) closeModal()">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <span id="modalBadge" class="badge">TAG</span>
+            <div id="modalDate" class="meta-date"></div>
+            <h2 id="modalTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; line-height: 1.2; margin-bottom: 20px;"></h2>
+            <img id="modalImage" src="" alt="Article Image" style="width:100%; max-height:420px; object-fit:cover; margin-bottom:20px; border-radius:3px; display:none;">
+            
+            <!-- Nội dung bài viết + Link trích nguồn động -->
+            <div id="modalContent" class="markdown-body"></div>
+            
+            <!-- Khung bình luận của AI-Agent tương tác -->
+            <div id="modalComments"></div>
         </div>
-      </div>
-    </div>`;
-}
+    </div>
 
-function renderGrid(articles){
-  const grid = document.getElementById('articleGrid');
-  const list = articles.slice(1);
-  if(!list.length){ grid.innerHTML=''; return; }
-  grid.innerHTML = list.map(a=>`
-    <div class="art-card" onclick="openModal('${a.slug}')">
-      ${thumbHtml(a.imageUrl,'art-thumb')}
-      ${badgeHtml(a.tag)}
-      <div class="art-title">${a.title||''}</div>
-      <div class="art-excerpt">${a.excerpt||''}</div>
-      <div class="art-meta"><span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span></div>
-    </div>`).join('');
-}
+    <script>
+        // Đường dẫn API Kết nối Google Sheets của bạn
+        const SHEETS_API = "https://script.google.com/macros/s/AKfycbyj8N6UnyW4KzP0SGe_9yW-9_OOnF6g8T5632GZ_9X3t57406R9n_fHsk217i3Dof5R/exec";
+        const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=600&auto=format&fit=crop"; // Ảnh lỗi thay thế
 
-function renderCases(cases){
-  const list = document.getElementById('casesList');
-  if(!cases.length){ list.innerHTML='<div style="padding:2rem 0;text-align:center;color:var(--ink-3);font-size:13px">Chưa có case study nào. Paste link vào Telegram bot để tạo.</div>'; return; }
-  list.innerHTML = cases.map(a=>`
-    <div class="case-card" onclick="openModal('${a.slug}')">
-      ${a.imageUrl?`<img class="case-thumb-sm" src="${a.imageUrl}" alt="" onerror="this.style.display='none'">`:`<div class="case-thumb-ph">CASE</div>`}
-      <div>
-        ${badgeHtml(a.tag)}
-        <div class="case-title">${a.title||''}</div>
-        <div class="case-excerpt">${a.excerpt||''}</div>
-        <div class="case-meta"><span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span></div>
-      </div>
-    </div>`).join('');
-}
+        let ALL_ARTICLES = [];
+        let currentCategory = 'all';
 
-function openModal(slug){
-  const a = ALL_ARTICLES.find(x=>x.slug===slug);
-  if(!a) return;
-  currentArticle = a;
-  document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
-  document.getElementById('modalTitle').textContent = a.title||'';
-  document.getElementById('modalMeta').innerHTML = `<span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span>·</span><a class="modal-source-link" href="${a.sourceUrl}" target="_blank">Xem nguồn gốc →</a>`:''}`;
-  document.getElementById('modalThumb').innerHTML = a.imageUrl?`<img class="modal-hero-img" src="${a.imageUrl}" alt="${a.title||''}" onerror="this.style.display='none'">`:`<div class="modal-hero-ph">SANDBOX NEWS</div>`;
-  document.getElementById('modalBody').innerHTML = markdownToHtml(a.body||'');
-  document.getElementById('modalSource').innerHTML = a.sourceUrl?`Nguồn tham khảo: <a href="${a.sourceUrl}" target="_blank" style="color:var(--gold)">${a.sourceUrl}</a>`:'';
+        // Hàm khởi chạy hệ thống
+        window.onload = async function() {
+            await fetchArticles();
+            checkDeepLink();
+        };
 
-  // AI Comments
-  const comments = getRandomComments(3);
-  document.getElementById('aiComments').innerHTML = comments.map(c=>`
-    <div class="ai-comment">
-      <div class="ai-comment-header">
-        <div class="ai-avatar">${c.initial}</div>
-        <div><div class="ai-name">${c.name}</div><div class="ai-time">${c.time}</div></div>
-      </div>
-      <div class="ai-text">${c.text}</div>
-    </div>`).join('');
+        // Hàm gọi dữ liệu từ API Sheets[cite: 1]
+        async function fetchArticles() {
+            try {
+                const response = await fetch(SHEETS_API);
+                const rawData = await response.json();
+                
+                // Chuẩn hóa dữ liệu và tạo Slug định danh từ tiêu đề
+                ALL_ARTICLES = rawData.map(item => ({
+                    ...item,
+                    slug: slugify(item.title || ''),
+                    tag: (item.tag || 'thi-truong').trim().toLowerCase(),
+                    type: (item.type || 'news').trim().toLowerCase()
+                }));
 
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
+                renderTicker();
+                renderPage();
+            } catch (error) {
+                console.error("Lỗi kết nối API:", error);
+                document.getElementById('articleGrid').innerHTML = `<p style="color:red; text-align:center; width:100%;">Không thể tải dữ liệu tin tức. Vui lòng thử lại sau!</p>`;
+            }
+        }
 
-function closeModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow='';
-}
+        // Tạo chuỗi liên kết Slug chuẩn không dấu
+        function slugify(text) {
+            return text.toString().toLowerCase().trim()
+                .replace(/\s+/g, '-')
+                .replace(/[áàảãạăắằẳẵặâấầẩẫậ]/g, 'a')
+                .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
+                .replace(/[iíìỉĩị]/g, 'i')
+                .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
+                .replace(/[úùủũụưứừửữự]/g, 'u')
+                .replace(/[ýỳỷỹỵ]/g, 'y')
+                .replace(/đ/g, 'd')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-');
+        }
 
-function shareFacebook(){
-  const url = currentArticle ? `https://sandboxstartup.vn` : 'https://sandboxstartup.vn';
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank','width=600,height=400');
-}
+        // Trình diễn thanh chạy chữ động (Lấy 5 bài mới nhất)
+        function renderTicker() {
+            const tickerWrap = document.getElementById('tickerWrap');
+            const newsOnly = ALL_ARTICLES.filter(a => a.type !== 'case');
+            const latest = newsOnly.slice(0, 5);
+            
+            if(latest.length === 0) return;
+            
+            let htmlContent = '';
+            // Nhân bản chuỗi lặp 2 lần để chạy không điểm đứt
+            for (let i = 0; i < 2; i++) {
+                latest.forEach(art => {
+                    htmlContent += `<div class="ticker-item" onclick="openModal('${art.slug}')">🔥 ${art.title}</div>`;
+                });
+            }
+            tickerWrap.innerHTML = htmlContent;
+        }
 
-function copyLink(){
-  navigator.clipboard.writeText('https://sandboxstartup.vn').then(()=>{
-    const btn = document.querySelector('.share-copy');
-    btn.textContent='✓ Đã copy!';
-    setTimeout(()=>btn.textContent='🔗 Copy link',2000);
-  });
-}
+        // Điều phối hiển thị dựa theo danh mục (Tab) người dùng chọn[cite: 1]
+        function renderPage() {
+            const featuredSection = document.getElementById('featuredSection');
+            const sectionTitle = document.getElementById('sectionTitle');
+            const gridContainer = document.getElementById('articleGrid');
 
-function openCommentForm(){
-  window.open('mailto:news@sandboxstartup.vn?subject=Bình luận bài viết: '+(currentArticle?.title||''),'_blank');
-}
+            // Lọc dữ liệu danh mục[cite: 1]
+            let filtered = [];
+            if (currentCategory === 'all') {
+                filtered = ALL_ARTICLES.filter(a => a.type !== 'case'); // Ẩn mục case khỏi trang chủ[cite: 1]
+                featuredSection.style.display = 'grid';
+                sectionTitle.innerText = "Tin tức mới cập nhật";
+            } else if (currentCategory === 'case') {
+                filtered = ALL_ARTICLES.filter(a => a.type === 'case'); // Chỉ hiện bài viết dạng Case Study[cite: 1]
+                featuredSection.style.display = 'none';
+                sectionTitle.innerText = "📚 Tuyển tập Case Study chuyên sâu";
+            } else {
+                filtered = ALL_ARTICLES.filter(a => a.tag === currentCategory && a.type !== 'case'); // Lọc theo tag[cite: 1]
+                featuredSection.style.display = 'none';
+                sectionTitle.innerText = `Chủ đề: ${document.getElementById('tab-' + currentCategory).innerText}`;
+            }
 
-document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+            // Nếu không có bài viết nào
+            if(filtered.length === 0) {
+                gridContainer.innerHTML = `<p style="text-align:center; width:100%; color:#777; font-style:italic; padding: 40px 0;">Hiện chưa có dữ liệu bài viết nào trong danh mục này.</p>`;
+                if(currentCategory === 'all') featuredSection.style.display = 'none';
+                return;
+            }
 
-// FETCH DATA
-async function loadArticles(){
-  try {
-    const res = await fetch(SHEETS_API);
-    const data = await res.json();
-    if(data.ok && data.articles && data.articles.length>0){
-      ALL_ARTICLES = data.articles.map(a=>({
-        slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',
-        body:a.body||'',tag:a.tag||'thi-truong',type:a.type||'news',
-        date:a.date||'',readTime:a.readTime||'',
-        sourceUrl:a.sourceUrl||'',imageUrl:a.imageUrl||''
-      }));
-    } else { ALL_ARTICLES = SAMPLE; }
-  } catch(e){ ALL_ARTICLES = SAMPLE; }
-  applyFilters();
-}
+            // Render khu vực Trang chủ (Hero + Side)[cite: 1]
+            if (currentCategory === 'all') {
+                const heroData = filtered[0];[cite: 1]
+                const sideData = filtered.slice(1, 4);[cite: 1]
+                const gridData = filtered.slice(4);[cite: 1]
 
-const SAMPLE = [
-  {slug:'sample-1',title:'Làn sóng M&A ngành F&B 2026: Cơ hội bứt phá cho SME Việt',excerpt:'Năm 2026 đánh dấu bước chuyển mình mạnh mẽ trong bức tranh mua bán sáp nhập ngành F&B tại Việt Nam.',body:'Năm 2026 đánh dấu một bước chuyển mình mạnh mẽ trong bức tranh mua bán sáp nhập ngành F&B...\n\n## 1. Bức tranh thị trường\n\nNgành thực phẩm và đồ uống Việt Nam đang hút mạnh vốn ngoại.\n\n## 2. Bài học cho SME\n\nDoanh nghiệp cần chuẩn bị hồ sơ tài chính minh bạch trước khi tiếp xúc nhà đầu tư.',tag:'ma',type:'news',date:'1 tháng 6, 2026',readTime:'6 phút đọc',sourceUrl:'https://cafef.vn',imageUrl:''},
-  {slug:'sample-2',title:'EV/EBITDA — Chỉ số định giá quan trọng nhất khi bán doanh nghiệp',excerpt:'Phương pháp EV/EBITDA đang trở thành chuẩn mực định giá SME Việt Nam.',body:'EV/EBITDA là chỉ số tài chính được dùng phổ biến nhất...\n\n## Tại sao EV/EBITDA quan trọng?\n\nNhà đầu tư không quan tâm lợi nhuận kế toán mà nhìn vào EBITDA chuẩn hóa.',tag:'dinh-gia',type:'news',date:'31 tháng 5, 2026',readTime:'5 phút đọc',sourceUrl:'https://vneconomy.vn',imageUrl:''},
-  {slug:'sample-case-1',title:'Case Study: Grab IPO — Bài học cấu trúc Holding cho startup Đông Nam Á',excerpt:'Grab chọn SPAC thay vì IPO truyền thống — quyết định gây tranh cãi nhưng đầy tính toán chiến lược.',body:'## 1. Bối cảnh thương vụ\n\nGrab Technologies niêm yết tại Nasdaq năm 2021 thông qua SPAC với định giá 39.6 tỷ USD...\n\n## 2. Cấu trúc thương vụ\n\nGrab dùng cấu trúc Cayman Islands Holding để tối ưu thuế và thu hút nhà đầu tư quốc tế.\n\n## 3. Bài học cho SME Việt Nam\n\nChuẩn bị Holding ít nhất 18 tháng trước khi gọi vốn lớn.',tag:'ipo',type:'case',date:'1 tháng 6, 2026',readTime:'12 phút đọc',sourceUrl:'https://techcrunch.com',imageUrl:''}
-];
+                // Hero Render[cite: 1]
+                document.getElementById('heroPostContainer').innerHTML = `
+                    <div class="hero-post" onclick="openModal('${heroData.slug}')">
+                        <img src="${heroData.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                        <span class="badge badge-${heroData.tag}">${heroData.tag}</span>
+                        <h2 class="hero-title">${heroData.title}</h2>
+                        <p class="hero-excerpt">${heroData.excerpt || 'Đọc phân tích chuyên sâu về thương vụ này trên Sandbox News...'}</p>
+                        <div class="meta-date">${formatDate(heroData.pubDate)}</div>
+                    </div>
+                `;
 
-loadArticles();
-</script>
+                // Side Render[cite: 1]
+                let sideHtml = '';
+                sideData.forEach(art => {
+                    sideHtml += `
+                        <div class="side-item" onclick="openModal('${art.slug}')">
+                            <img src="${art.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                            <div>
+                                <span class="badge badge-${art.tag}" style="font-size:0.6rem; margin-bottom:3px;">${art.tag}</span>
+                                <h4 class="side-item-title">${art.title}</h4>
+                                <div class="meta-date" style="margin-top:4px;">${formatDate(art.pubDate)}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('sidePostsContainer').innerHTML = sideHtml || '<p style="color:#777;">Chưa có bài viết phổ biến.</p>';
+
+                // Grid Render[cite: 1]
+                renderGridItems(gridData);
+            } else {
+                // Khung danh mục riêng biệt: Đẩy toàn bộ dữ liệu vào Grid
+                renderGridItems(filtered);
+            }
+        }
+
+        // Render các Block phần tử lưới
+        function renderGridItems(items) {
+            const gridContainer = document.getElementById('articleGrid');
+            let html = '';
+            items.forEach(art => {
+                const currentBadge = art.type === 'case' ? 'badge-case' : `badge-${art.tag}`;
+                const label = art.type === 'case' ? 'CASE STUDY' : art.tag;
+                html += `
+                    <div class="grid-item" onclick="openModal('${art.slug}')">
+                        <img src="${art.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                        <span class="badge ${currentBadge}">${label}</span>
+                        <div class="meta-date">${formatDate(art.pubDate)}</div>
+                        <h4 class="grid-title">${art.title}</h4>
+                        <p class="grid-excerpt">${art.excerpt || 'Bấm vào để xem nội dung tổng hợp phân tích chi tiết của bài viết.'}</p>
+                    </div>
+                `;
+            });
+            gridContainer.innerHTML = html;
+        }
+
+        // Chuyển đổi tab danh mục
+        function changeCategory(catId) {
+            currentCategory = catId;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + catId).classList.add('active');
+            
+            // Xóa tham số bài viết khỏi URL khi chuyển tab tránh hiểu nhầm
+            const url = new URL(window.location);
+            url.searchParams.delete('article');
+            window.history.pushState({}, '', url);
+
+            renderPage();
+        }
+
+        // Hàm mở cửa sổ Modal chi tiết bài viết[cite: 1]
+        function openModal(slug) {
+            const article = ALL_ARTICLES.find(a => a.slug === slug);
+            if (!article) return;
+
+            // Cập nhật tham số trên URL giúp kích hoạt Deep Linking
+            const url = new URL(window.location);
+            url.searchParams.set('article', slug);
+            window.history.pushState({}, '', url);
+            document.title = `${article.title} | Sandbox News`;
+
+            // Phân tách cấu trúc nội dung từ Markdown
+            let htmlContent = markdownToHtml(article.content || '');
+
+            // CHÈN TỰ ĐỘNG TRÍCH NGUỒN (ĐẢM BẢO BẢN QUYỀN NHƯ Ý BẠN)
+            if (article.source_url) {
+                const name = article.source_name || "Nguồn gốc";
+                htmlContent += `
+                    <div style="margin-top: 35px; padding-top: 15px; border-top: 1px dashed var(--border); font-style: italic; color: #555; font-size: 0.95rem;">
+                        Trích nguồn bài gốc tại: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer" style="color: var(--gold); text-decoration: underline; font-weight:500;">${name}</a> / Phân tích & Biên tập lại bởi hệ thống AI-Agent Sandbox News.
+                    </div>
+                `;
+            }
+
+            // Cấu hình nhãn Badge cho Modal
+            const badgeClass = article.type === 'case' ? 'badge-case' : `badge-${article.tag}`;
+            const badgeLabel = article.type === 'case' ? 'CASE STUDY' : article.tag.toUpperCase();
+            document.getElementById('modalBadge').className = `badge ${badgeClass}`;
+            document.getElementById('modalBadge').innerText = badgeLabel;
+
+            document.getElementById('modalTitle').innerText = article.title;
+            document.getElementById('modalDate').innerText = formatDate(article.pubDate);
+            document.getElementById('modalContent').innerHTML = htmlContent;
+
+            // Xử lý ảnh bài viết
+            const modalImg = document.getElementById('modalImage');
+            if (article.image) {
+                modalImg.src = article.image;
+                modalImg.style.display = 'block';
+                modalImg.onerror = function() { this.style.display = 'none'; };
+            } else {
+                modalImg.style.display = 'none';
+            }
+
+            // BÓC TÁCH VÀ RENDER PHẦN BÌNH LUẬN GIẢ LẬP TỪ AI-AGENT[cite: 1]
+            const commentBox = document.getElementById('modalComments');
+            commentBox.innerHTML = ''; // Reset khung cũ
+            
+            let commentList = [];
+            if (article.comments) {
+                try {
+                    // Giải nén text JSON trong Sheets trở lại thành Mảng dữ liệu[cite: 1]
+                    commentList = typeof article.comments === 'string' ? JSON.parse(article.comments) : article.comments;
+                } catch(e) {
+                    console.warn("Dữ liệu comment chưa phải cấu trúc mảng AI Object, chuyển định dạng thô.");
+                }
+            }
+
+            if (commentList && commentList.length > 0) {
+                let commentsHtml = `
+                    <h4 style="margin-top: 40px; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; border-bottom: 2px solid var(--ink); padding-bottom: 5px; text-transform: uppercase;">
+                        Thảo luận bàn tròn (${commentList.length})
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                `;
+                
+                commentList.forEach(cmt => {
+                    commentsHtml += `
+                        <div style="background: #edeae0; padding: 15px; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0;">
+                            <strong style="display: block; color: var(--ink); margin-bottom: 4px; font-size: 0.95rem;">${cmt.author}</strong>
+                            <p style="margin: 0; color: #333; font-size: 0.9rem; line-height: 1.5; text-align: left;">${cmt.text}</p>
+                        </div>
+                    `;
+                });
+                commentsHtml += `</div>`;
+                commentBox.innerHTML = commentsHtml;
+            } else {
+                commentBox.innerHTML = `
+                    <h4 style="margin-top: 40px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 5px; color:#666;">Thảo luận bàn tròn</h4>
+                    <p style="color:#777; font-style:italic; font-size:0.9rem;">Hệ thống chưa ghi nhận lượt thảo luận chuyên sâu nào cho thương vụ này.</p>
+                `;
+            }
+
+            // Hiển thị khung Modal
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Đóng cửa sổ Modal
+        function closeModal() {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.title = "Sandbox News — Tạp chí Phân tích Tài chính & Doanh nghiệp";
+
+            // Xóa chuỗi query trên link để trả lại URL sạch
+            const url = new URL(window.location);
+            url.searchParams.delete('article');
+            window.history.pushState({}, '', url);
+        }
+
+        // Kiểm tra Deep Link (?article=slug) khi mở trang
+        function checkDeepLink() {
+            const params = new URLSearchParams(window.location.search);
+            const articleSlug = params.get('article');
+            if (articleSlug) {
+                openModal(articleSlug);
+            }
+        }
+
+        // Định dạng ngày tháng
+        function formatDate(dateStr) {
+            if(!dateStr) return '';
+            try {
+                const d = new Date(dateStr);
+                if(isNaN(d.getTime())) return dateStr;
+                return d.toLocaleDateString('vi-VN', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+            } catch(e) { return dateStr; }
+        }
+
+        // Thuật toán chuyển đổi text Markdown thô sang cấu trúc HTML
+        function markdownToHtml(markdown) {
+            return markdown
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/### (.*?)\n/g, '<h3>$1</h3>')
+                .replace(/- (.*?)\n/g, '<li>$1</li>')
+                .split('\n\n').map(p => {
+                    if(p.trim().startsWith('<h3') || p.trim().startsWith('<li')) return p;
+                    return p.trim() ? `<p>${p}</p>` : '';
+                }).join('');
+        }
+    </script>
 </body>
 </html>
