@@ -3,180 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandbox News — Tạp chí Phân tích Tài chính & Doanh nghiệp</title>
+    <title>The Sandbox Entrepreneurs Vietnam — SANDBOX.NEWS</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --paper: #f4f1ea;
-            --ink: #111111;
-            --gold: #aa8439;
-            --border: #dcd7cc;
-            --tag-ma: #b85042;
-            --tag-dinhgia: #375e97;
-            --tag-holding: #4f3793;
-            --tag-thue: #3f6844;
-            --tag-thitruong: #e06317;
-            --tag-ipo: #026670;
-            --tag-startup: #98dbc6;
+            --paper: #f9f6f0;       /* Màu nền giấy báo cổ điển sang trọng */
+            --ink: #111111;         /* Màu mực đen quý phái */
+            --gold: #9e762b;        /* Màu vàng kim làm điểm nhấn dòng chuyên sâu */
+            --border: #222222;      /* Đường kẻ phân khung kiểu tạp chí */
+            --border-light: #e0dad0;/* Đường kẻ phụ tinh tế */
+            
+            /* Palette màu nhận diện 10 Danh mục cao cấp */
+            --tag-ma: #a33835;
+            --tag-dinhgia: #295270;
+            --tag-holding: #432b68;
+            --tag-thue: #2e5339;
+            --tag-thitruong: #c65312;
+            --tag-taichinh: #744233;
+            --tag-ipo: #0f6466;
+            --tag-startup: #166053;
+            --tag-congnghe: #134074;
+            --tag-case: #111111;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.6; }
+        body { background-color: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.6; padding-bottom: 60px; }
 
-        /* Header & Navigation */
-        header { border-bottom: 4px double var(--ink); padding: 20px 0; text-align: center; background: var(--paper); }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--ink); text-decoration: none; }
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; margin-top: 20px; overflow-x: auto; white-space: nowrap; }
-        .tab-btn { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; text-transform: uppercase; cursor: pointer; padding: 5px 10px; color: #555; transition: all 0.3s; }
-        .tab-btn.active, .tab-btn:hover { color: var(--ink); font-weight: 700; border-bottom: 2px solid var(--ink); }
+        /* Khung viền trang báo toàn trang */
+        .page-wrapper { max-width: 1300px; margin: 0 auto; padding: 0 30px; }
 
-        /* Ticker Wrap */
-        .ticker-wrap { background: var(--ink); color: #fff; padding: 10px 0; overflow: hidden; position: relative; }
-        .ticker { display: flex; white-space: nowrap; animation: ticker 25s linear infinite; }
+        /* Header & Giấy báo Tòa soạn */
+        header { padding: 30px 0 10px 0; text-align: center; border-bottom: 1px solid var(--ink); }
+        .sub-header-meta { display: flex; justify-content: space-between; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; border-bottom: 1px solid var(--ink); padding-bottom: 8px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .logo { font-family: 'Cormorant Garamond', serif; font-weight: 700; text-transform: uppercase; color: var(--ink); text-decoration: none; display: block; line-height: 1; transition: color 0.3s; }
+        .logo:hover { color: var(--gold); }
+        
+        /* Thanh Điều Hướng 10 Danh Mục Mới Mãn Nhãn */
+        .nav-tabs { display: flex; justify-content: flex-start; gap: 8px; border-bottom: 4px double var(--ink); padding: 8px 0; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .nav-tabs::-webkit-scrollbar { height: 4px; }
+        .nav-tabs::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+        .tab-btn { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; cursor: pointer; padding: 6px 14px; color: #444; border-radius: 3px; transition: all 0.2s ease-in-out; letter-spacing: 0.5px; }
+        .tab-btn.active, .tab-btn:hover { color: var(--paper); background: var(--ink); }
+
+        /* Ticker Bảng Tin Chạy Tự Động */
+        .ticker-wrap { border-bottom: 1px solid var(--ink); color: var(--ink); padding: 10px 0; overflow: hidden; background: #ede8df; }
+        .ticker { display: flex; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker:hover { animation-play-state: paused; }
-        .ticker-item { padding: 0 30px; font-size: 0.85rem; text-transform: uppercase; font-weight: 500; cursor: pointer; }
-        .ticker-item:hover { color: var(--gold); }
+        .ticker-item { padding: 0 40px; font-size: 0.9rem; font-family: 'Cormorant Garamond', serif; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .ticker-item:hover { color: var(--gold); text-decoration: underline; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-        /* Main Layout Grid */
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .magazine-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-bottom: 40px; }
+        /* Cấu trúc Lưới Tạp Chí Bất Đối Xứng (Premium Layout) */
+        .magazine-layout { display: grid; grid-template-columns: 2.2fr 1fr; gap: 40px; margin: 35px 0; padding-bottom: 35px; border-bottom: 1px solid var(--ink); }
         
-        /* Hero Big Post */
-        .hero-post { cursor: pointer; border-right: 1px solid var(--border); padding-right: 40px; }
-        .hero-post img { width: 100%; max-height: 400px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 15px; }
-        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 15px; }
-        .hero-excerpt { color: #444; font-size: 1.05rem; margin-bottom: 15px; }
+        /* Bài viết Tiêu Điểm lớn (Hero) */
+        .hero-post { cursor: pointer; border-right: 1px solid var(--border-light); padding-right: 40px; }
+        .hero-post img { width: 100%; height: 450px; object-fit: cover; filter: sepia(10%); border: 1px solid var(--ink); margin-bottom: 18px; transition: opacity 0.3s; }
+        .hero-post:hover img { opacity: 0.9; }
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.05; margin-bottom: 15px; letter-spacing: -0.5px; }
+        .hero-excerpt { color: #222; font-size: 1.1rem; margin-bottom: 15px; text-align: justify; }
 
-        /* Top Side Posts */
-        .side-posts { display: flex; flex-direction: column; gap: 25px; }
-        .side-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
-        .side-item { display: flex; gap: 15px; cursor: pointer; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
-        .side-item img { width: 80px; height: 80px; object-fit: cover; border: 1px solid var(--border); }
-        .side-item-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
+        /* Cột Đọc Nhiều Nhất bên phải */
+        .side-posts { display: flex; flex-direction: column; gap: 20px; }
+        .side-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 4px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .side-item { display: flex; gap: 15px; cursor: pointer; padding-bottom: 15px; border-bottom: 1px dashed var(--border-light); }
+        .side-item img { width: 90px; height: 90px; object-fit: cover; border: 1px solid var(--border-light); }
+        .side-item-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+        .side-item:hover .side-item-title { color: var(--gold); }
 
-        /* Bottom Grid */
-        .grid-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 5px; margin-top: 5px; margin-bottom: 25px; text-transform: uppercase; }
-        .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .grid-item { cursor: pointer; background: transparent; transition: transform 0.2s; }
-        .grid-item:hover { transform: translateY(-3px); }
-        .grid-item img { width: 100%; height: 200px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 12px; }
-        .grid-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
-        .grid-excerpt { font-size: 0.9rem; color: #555; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        /* Khung Lưới Tin Tức Bên Dưới */
+        .grid-heading { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; border-bottom: 2px solid var(--ink); padding-bottom: 5px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
+        .grid-item { cursor: pointer; display: flex; flex-direction: column; }
+        .grid-item img { width: 100%; height: 220px; object-fit: cover; border: 1px solid var(--border-light); margin-bottom: 15px; }
+        .grid-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 10px; }
+        .grid-item:hover .grid-title { color: var(--gold); }
+        .grid-excerpt { font-size: 0.95rem; color: #333; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-align: justify; }
 
-        /* Badges & Meta */
-        .badge { display: inline-block; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #fff; border-radius: 2px; margin-bottom: 8px; }
+        /* Badges & Nhãn Thẻ Thiết Kế */
+        .badge { display: inline-block; padding: 3px 8px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #fff; border-radius: 2px; margin-bottom: 10px; width: fit-content; letter-spacing: 0.5px; }
         .badge-ma { background: var(--tag-ma); }
         .badge-dinh-gia { background: var(--tag-dinhgia); }
         .badge-holding { background: var(--tag-holding); }
         .badge-thue { background: var(--tag-thue); }
         .badge-thi-truong { background: var(--tag-thitruong); }
+        .badge-tai-chinh { background: var(--tag-taichinh); }
         .badge-ipo { background: var(--tag-ipo); }
         .badge-startup { background: var(--tag-startup); }
-        .badge-case { background: var(--ink); }
-        .meta-date { font-size: 0.75rem; color: #777; margin-bottom: 5px; text-transform: uppercase; }
+        .badge-cong-nghe { background: var(--tag-congnghe); }
+        .badge-case { background: var(--tag-case); }
+        .meta-date { font-size: 0.75rem; color: #666; margin-bottom: 6px; text-transform: uppercase; font-weight: 500; }
 
-        /* Modal View Base */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
+        /* Cửa sổ Pop-up xem nội dung chi tiết bài viết */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,17,17,0.75); z-index: 1000; overflow-y: auto; padding: 40px 20px; backdrop-filter: blur(4px); }
         .modal.active { display: block; }
-        .modal-content { background: var(--paper); max-width: 800px; margin: 0 auto; padding: 40px; border: 1px solid var(--border); position: relative; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: #666; }
+        .modal-content { background: var(--paper); max-width: 850px; margin: 0 auto; padding: 45px; border: 1px solid var(--ink); position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .close-modal { position: absolute; top: 20px; right: 25px; font-size: 2.2rem; cursor: pointer; color: #666; line-height: 1; }
         .close-modal:hover { color: var(--ink); }
-        .markdown-body { font-size: 1.1rem; line-height: 1.7; color: #222; margin-top: 20px; }
-        .markdown-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: 25px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .markdown-body p { margin-bottom: 15px; text-align: justify; }
+        
+        /* Định dạng Văn bản Markdown độc quyền của Sandbox */
+        .markdown-body { font-size: 1.15rem; line-height: 1.75; color: #111; margin-top: 25px; }
+        .markdown-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid var(--ink); padding-bottom: 4px; font-weight: 700; }
+        .markdown-body p { margin-bottom: 18px; text-align: justify; }
+        .markdown-body li { margin-left: 20px; margin-bottom: 8px; }
 
-        /* Responsive Mobile */
-        @media (max-width: 768px) {
-            .magazine-layout { grid-template-columns: 1fr; gap: 30px; }
+        /* Responsive linh hoạt */
+        @media (max-width: 992px) {
+            .magazine-layout { grid-template-columns: 1fr; gap: 35px; }
             .hero-post { border-right: none; padding-right: 0; }
+            .article-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .logo { font-size: 2.2rem !important; }
             .article-grid { grid-template-columns: 1fr; }
-            .modal-content { padding: 20px; }
+            .modal-content { padding: 25px 20px; }
+            .hero-title { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo" onclick="changeCategory('all')">Sandbox News</a>
-        <div class="nav-tabs">
-            <button class="tab-btn active" id="tab-all" onclick="changeCategory('all')">Tất cả</button>
-            <button class="tab-btn" id="tab-ma" onclick="changeCategory('ma')">M&A</button>
-            <button class="tab-btn" id="tab-dinh-gia" onclick="changeCategory('dinh-gia')">Định giá</button>
-            <button class="tab-btn" id="tab-holding" onclick="changeCategory('holding')">Holding</button>
-            <button class="tab-btn" id="tab-thue" onclick="changeCategory('thue')">Thuế & Pháp lý</button>
-            <button class="tab-btn" id="tab-thi-truong" onclick="changeCategory('thi-truong')">Thị trường</button>
-            <button class="tab-btn" id="tab-ipo" onclick="changeCategory('ipo')">IPO</button>
-            <button class="tab-btn" id="tab-startup" onclick="changeCategory('startup')">Startup</button>
-            <button class="tab-btn" id="tab-case" onclick="changeCategory('case')">📚 Case Study</button>
-        </div>
-    </header>
+    <div class="page-wrapper">
+        <header>
+            <div class="sub-header-meta">
+                <div>Hội đồng Biên tập Kỹ thuật số Sandbox</div>
+                <div id="currentDateDisplay">Tháng Sáu, 2026</div>
+                <div>Nhật báo Phân tích Chiến lược & Dòng tiền</div>
+            </div>
+            
+            <a href="#" class="logo" onclick="changeCategory('all')" style="font-size: 3.2rem; letter-spacing: 2px; margin-bottom: 5px;">
+                The Sandbox Entrepreneurs
+            </a>
+            <div style="font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 6px; color: var(--gold); margin-bottom: 25px;">
+                Vietnam &bull; SANDBOX.NEWS
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="tab-btn active" id="tab-all" onclick="changeCategory('all')">Tất cả bài phân tích</button>
+                <button class="tab-btn" id="tab-ma" onclick="changeCategory('ma')">M&A</button>
+                <button class="tab-btn" id="tab-dinh-gia" onclick="changeCategory('dinh-gia')">Định giá</button>
+                <button class="tab-btn" id="tab-holding" onclick="changeCategory('holding')">Holding</button>
+                <button class="tab-btn" id="tab-thue" onclick="changeCategory('thue')">Thuế & Pháp lý</button>
+                <button class="tab-btn" id="tab-thi-truong" onclick="changeCategory('thi-truong')">Thị trường</button>
+                <button class="tab-btn" id="tab-tai-chinh" onclick="changeCategory('tai-chinh')">Tài chính</button>
+                <button class="tab-btn" id="tab-ipo" onclick="changeCategory('ipo')">IPO</button>
+                <button class="tab-btn" id="tab-startup" onclick="changeCategory('startup')">Startup</button>
+                <button class="tab-btn" id="tab-cong-nghe" onclick="changeCategory('cong-nghe')">Công nghệ</button>
+                <button class="tab-btn" id="tab-case" onclick="changeCategory('case')">📚 Case Study Chuyên sâu</button>
+            </div>
+        </header>
 
-    <div class="ticker-wrap">
-        <div class="ticker" id="tickerWrap">
-            <!-- Dòng chữ chạy được Render tự động qua JS -->
-            <div class="ticker-item">Đang kết nối kho dữ liệu hệ thống Sandbox News...</div>
+        <div class="ticker-wrap">
+            <div class="ticker" id="tickerWrap">
+                <div class="ticker-item">Đang kết nối vào hệ thống dữ liệu n8n SANDBOX.NEWS...</div>
+            </div>
         </div>
-    </div>
 
-    <div class="container">
-        <!-- Vùng hiển thị Trang chủ (Tin Nổi Bật + Đọc Nhiều) -->
         <div id="featuredSection" class="magazine-layout">
             <div id="heroPostContainer"></div>
             <div class="side-posts">
-                <h3 class="side-heading">Đọc nhiều nhất</h3>
+                <h3 class="side-heading">Phân tích đọc nhiều</h3>
                 <div id="sidePostsContainer"></div>
             </div>
         </div>
 
-        <!-- Khung Lưới Tin Tức -->
         <h3 class="grid-heading" id="sectionTitle">Tin tức mới cập nhật</h3>
         <div class="article-grid" id="articleGrid"></div>
     </div>
 
-    <!-- Cấu trúc Modal xem chi tiết bài viết -->
     <div id="articleModal" class="modal" onclick="if(event.target==this) closeModal()">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <span id="modalBadge" class="badge">TAG</span>
             <div id="modalDate" class="meta-date"></div>
-            <h2 id="modalTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 2.3rem; line-height: 1.2; margin-bottom: 20px;"></h2>
-            <img id="modalImage" src="" alt="Article Image" style="width:100%; max-height:420px; object-fit:cover; margin-bottom:20px; border-radius:3px; display:none;">
+            <h2 id="modalTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; line-height: 1.15; margin-bottom: 20px; font-weight: 700;"></h2>
+            <img id="modalImage" src="" alt="Hình ảnh bài viết" style="width:100%; max-height:450px; object-fit:cover; margin-bottom:25px; border: 1px solid var(--ink); display:none;">
             
-            <!-- Nội dung bài viết + Link trích nguồn động -->
             <div id="modalContent" class="markdown-body"></div>
             
-            <!-- Khung bình luận của AI-Agent tương tác -->
             <div id="modalComments"></div>
         </div>
     </div>
 
     <script>
-        // Đường dẫn API Kết nối Google Sheets của bạn
+        // Đường dẫn API liên kết cơ sở dữ liệu Google Sheets của bạn
         const SHEETS_API = "https://script.google.com/macros/s/AKfycbyj8N6UnyW4KzP0SGe_9yW-9_OOnF6g8T5632GZ_9X3t57406R9n_fHsk217i3Dof5R/exec";
-        const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=600&auto=format&fit=crop"; // Ảnh lỗi thay thế
+        const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=800&auto=format&fit=crop"; 
 
         let ALL_ARTICLES = [];
         let currentCategory = 'all';
 
-        // Hàm khởi chạy hệ thống
         window.onload = async function() {
+            // Hiển thị ngày hiện tại theo chuẩn tiếng Việt sang trọng
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDateDisplay').innerText = new Date().toLocaleDateString('vi-VN', options);
+            
             await fetchArticles();
             checkDeepLink();
         };
 
-        // Hàm gọi dữ liệu từ API Sheets[cite: 1]
+        // Đồng bộ và tải dữ liệu từ Google Sheets API
         async function fetchArticles() {
             try {
                 const response = await fetch(SHEETS_API);
                 const rawData = await response.json();
                 
-                // Chuẩn hóa dữ liệu và tạo Slug định danh từ tiêu đề
+                // Chuẩn hóa và làm sạch Tag đầu vào từ n8n
                 ALL_ARTICLES = rawData.map(item => ({
                     ...item,
                     slug: slugify(item.title || ''),
@@ -187,12 +224,12 @@
                 renderTicker();
                 renderPage();
             } catch (error) {
-                console.error("Lỗi kết nối API:", error);
-                document.getElementById('articleGrid').innerHTML = `<p style="color:red; text-align:center; width:100%;">Không thể tải dữ liệu tin tức. Vui lòng thử lại sau!</p>`;
+                console.error("Lỗi đồng bộ dữ liệu hệ thống:", error);
+                document.getElementById('articleGrid').innerHTML = `<p style="color:red; text-align:center; width:100%; font-weight:bold;">Hệ thống đang bảo trì luồng dữ liệu tự động hóa n8n. Vui lòng quay lại sau!</p>`;
             }
         }
 
-        // Tạo chuỗi liên kết Slug chuẩn không dấu
+        // Tạo chuỗi liên kết tĩnh Slug tự động không dấu cho bài viết
         function slugify(text) {
             return text.toString().toLowerCase().trim()
                 .replace(/\s+/g, '-')
@@ -207,7 +244,7 @@
                 .replace(/\-\-+/g, '-');
         }
 
-        // Trình diễn thanh chạy chữ động (Lấy 5 bài mới nhất)
+        // Tạo dữ liệu cho thanh Ticker chạy đầu trang (Lấy 5 tin thời sự mới nhất)
         function renderTicker() {
             const tickerWrap = document.getElementById('tickerWrap');
             const newsOnly = ALL_ARTICLES.filter(a => a.type !== 'case');
@@ -216,112 +253,106 @@
             if(latest.length === 0) return;
             
             let htmlContent = '';
-            // Nhân bản chuỗi lặp 2 lần để chạy không điểm đứt
-            for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < 2; i++) { // Lặp 2 lần để tạo chuỗi vô tận
                 latest.forEach(art => {
-                    htmlContent += `<div class="ticker-item" onclick="openModal('${art.slug}')">🔥 ${art.title}</div>`;
+                    htmlContent += `<div class="ticker-item" onclick="openModal('${art.slug}')">✦ ${art.title}</div>`;
                 });
             }
             tickerWrap.innerHTML = htmlContent;
         }
 
-        // Điều phối hiển thị dựa theo danh mục (Tab) người dùng chọn[cite: 1]
+        // Cấu trúc phân phối bài viết thông minh theo danh mục
         function renderPage() {
             const featuredSection = document.getElementById('featuredSection');
             const sectionTitle = document.getElementById('sectionTitle');
             const gridContainer = document.getElementById('articleGrid');
 
-            // Lọc dữ liệu danh mục[cite: 1]
             let filtered = [];
             if (currentCategory === 'all') {
-                filtered = ALL_ARTICLES.filter(a => a.type !== 'case'); // Ẩn mục case khỏi trang chủ[cite: 1]
+                filtered = ALL_ARTICLES.filter(a => a.type !== 'case'); 
                 featuredSection.style.display = 'grid';
                 sectionTitle.innerText = "Tin tức mới cập nhật";
             } else if (currentCategory === 'case') {
-                filtered = ALL_ARTICLES.filter(a => a.type === 'case'); // Chỉ hiện bài viết dạng Case Study[cite: 1]
+                filtered = ALL_ARTICLES.filter(a => a.type === 'case'); 
                 featuredSection.style.display = 'none';
-                sectionTitle.innerText = "📚 Tuyển tập Case Study chuyên sâu";
+                sectionTitle.innerText = "📚 Tuyển tập Case Study phân tích chuyên sâu";
             } else {
-                filtered = ALL_ARTICLES.filter(a => a.tag === currentCategory && a.type !== 'case'); // Lọc theo tag[cite: 1]
+                filtered = ALL_ARTICLES.filter(a => a.tag === currentCategory && a.type !== 'case');
                 featuredSection.style.display = 'none';
-                sectionTitle.innerText = `Chủ đề: ${document.getElementById('tab-' + currentCategory).innerText}`;
+                sectionTitle.innerText = `Chủ đề phân tích: ${document.getElementById('tab-' + currentCategory).innerText}`;
             }
 
-            // Nếu không có bài viết nào
             if(filtered.length === 0) {
-                gridContainer.innerHTML = `<p style="text-align:center; width:100%; color:#777; font-style:italic; padding: 40px 0;">Hiện chưa có dữ liệu bài viết nào trong danh mục này.</p>`;
+                gridContainer.innerHTML = `<p style="text-align:center; width:100%; color:#666; font-style:italic; padding: 60px 0; font-size:1.1rem;">Chưa có bài phân tích nào được cập nhật trong danh mục này.</p>`;
                 if(currentCategory === 'all') featuredSection.style.display = 'none';
                 return;
             }
 
-            // Render khu vực Trang chủ (Hero + Side)[cite: 1]
+            // Phân bổ layout trang chủ: 1 bài Hero cực đại, 3 bài side-bar, còn lại đổ xuống Lưới
             if (currentCategory === 'all') {
-                const heroData = filtered[0];[cite: 1]
-                const sideData = filtered.slice(1, 4);[cite: 1]
-                const gridData = filtered.slice(4);[cite: 1]
+                const heroData = filtered[0];
+                const sideData = filtered.slice(1, 4);
+                const gridData = filtered.slice(4);
 
-                // Hero Render[cite: 1]
+                // Nạp bài viết Hero chính
                 document.getElementById('heroPostContainer').innerHTML = `
                     <div class="hero-post" onclick="openModal('${heroData.slug}')">
                         <img src="${heroData.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
-                        <span class="badge badge-${heroData.tag}">${heroData.tag}</span>
+                        <span class="badge badge-${heroData.tag}">${heroData.tag.replace('-',' ')}</span>
                         <h2 class="hero-title">${heroData.title}</h2>
-                        <p class="hero-excerpt">${heroData.excerpt || 'Đọc phân tích chuyên sâu về thương vụ này trên Sandbox News...'}</p>
+                        <p class="hero-excerpt">${heroData.excerpt || 'Xem bài phân tích chuyên môn chi tiết tại hệ thống thông tin của SANDBOX.NEWS...'}</p>
                         <div class="meta-date">${formatDate(heroData.pubDate)}</div>
                     </div>
                 `;
 
-                // Side Render[cite: 1]
+                // Nạp bài danh mục đọc nhiều bên cạnh
                 let sideHtml = '';
                 sideData.forEach(art => {
                     sideHtml += `
                         <div class="side-item" onclick="openModal('${art.slug}')">
                             <img src="${art.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
                             <div>
-                                <span class="badge badge-${art.tag}" style="font-size:0.6rem; margin-bottom:3px;">${art.tag}</span>
+                                <span class="badge badge-${art.tag}" style="font-size:0.55rem; padding: 1px 5px; margin-bottom:4px;">${art.tag.replace('-',' ')}</span>
                                 <h4 class="side-item-title">${art.title}</h4>
                                 <div class="meta-date" style="margin-top:4px;">${formatDate(art.pubDate)}</div>
                             </div>
                         </div>
                     `;
                 });
-                document.getElementById('sidePostsContainer').innerHTML = sideHtml || '<p style="color:#777;">Chưa có bài viết phổ biến.</p>';
+                document.getElementById('sidePostsContainer').innerHTML = sideHtml || '<p style="color:#666;">Chưa có bài phân tích bổ sung.</p>';
 
-                // Grid Render[cite: 1]
                 renderGridItems(gridData);
             } else {
-                // Khung danh mục riêng biệt: Đẩy toàn bộ dữ liệu vào Grid
                 renderGridItems(filtered);
             }
         }
 
-        // Render các Block phần tử lưới
+        // Nạp các bài viết vào cấu trúc Grid 3 cột kiểu báo in hiện đại
         function renderGridItems(items) {
             const gridContainer = document.getElementById('articleGrid');
             let html = '';
             items.forEach(art => {
                 const currentBadge = art.type === 'case' ? 'badge-case' : `badge-${art.tag}`;
-                const label = art.type === 'case' ? 'CASE STUDY' : art.tag;
+                const label = art.type === 'case' ? 'CASE STUDY' : art.tag.replace('-',' ');
                 html += `
                     <div class="grid-item" onclick="openModal('${art.slug}')">
                         <img src="${art.image || PLACEHOLDER_IMG}" onerror="this.src='${PLACEHOLDER_IMG}'">
                         <span class="badge ${currentBadge}">${label}</span>
                         <div class="meta-date">${formatDate(art.pubDate)}</div>
                         <h4 class="grid-title">${art.title}</h4>
-                        <p class="grid-excerpt">${art.excerpt || 'Bấm vào để xem nội dung tổng hợp phân tích chi tiết của bài viết.'}</p>
+                        <p class="grid-excerpt">${art.excerpt || 'Nhấn để xem bài nghiên cứu tổng hợp số liệu chuyên sâu và toàn diện.'}</p>
                     </div>
                 `;
             });
             gridContainer.innerHTML = html;
         }
 
-        // Chuyển đổi tab danh mục
+        // Chuyển tab danh mục và kiểm soát trạng thái URL tránh lỗi mất trang khi F5
         function changeCategory(catId) {
             currentCategory = catId;
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + catId).classList.add('active');
             
-            // Xóa tham số bài viết khỏi URL khi chuyển tab tránh hiểu nhầm
             const url = new URL(window.location);
             url.searchParams.delete('article');
             window.history.pushState({}, '', url);
@@ -329,33 +360,31 @@
             renderPage();
         }
 
-        // Hàm mở cửa sổ Modal chi tiết bài viết[cite: 1]
+        // Mở cửa sổ Modal bài viết dạng Pop-up điện ảnh
         function openModal(slug) {
             const article = ALL_ARTICLES.find(a => a.slug === slug);
             if (!article) return;
 
-            // Cập nhật tham số trên URL giúp kích hoạt Deep Linking
+            // Đồng bộ hoá Deep Link lên thanh URL địa chỉ
             const url = new URL(window.location);
             url.searchParams.set('article', slug);
             window.history.pushState({}, '', url);
-            document.title = `${article.title} | Sandbox News`;
+            document.title = `${article.title} | SANDBOX.NEWS`;
 
-            // Phân tách cấu trúc nội dung từ Markdown
             let htmlContent = markdownToHtml(article.content || '');
 
-            // CHÈN TỰ ĐỘNG TRÍCH NGUỒN (ĐẢM BẢO BẢN QUYỀN NHƯ Ý BẠN)
+            // TỰ ĐỘNG CHÈN QUYỀN TÁC GIẢ VÀ LINK GỐC ĐỂ BẢO VỆ BẢN QUYỀN
             if (article.source_url) {
-                const name = article.source_name || "Nguồn gốc";
+                const name = article.source_name || "Báo chính thống";
                 htmlContent += `
-                    <div style="margin-top: 35px; padding-top: 15px; border-top: 1px dashed var(--border); font-style: italic; color: #555; font-size: 0.95rem;">
-                        Trích nguồn bài gốc tại: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer" style="color: var(--gold); text-decoration: underline; font-weight:500;">${name}</a> / Phân tích & Biên tập lại bởi hệ thống AI-Agent Sandbox News.
+                    <div style="margin-top: 40px; padding-top: 15px; border-top: 1px dashed var(--ink); font-style: italic; color: #444; font-size: 0.95rem;">
+                        Trích nguồn dữ liệu bài gốc từ: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer" style="color: var(--gold); text-decoration: underline; font-weight:700;">${name}</a> / Khử cấu trúc văn bản hành chính, làm sạch thuật ngữ pháp lý và kiểm soát số liệu tự động bởi hệ thống AI-Agent của The Sandbox Entrepreneurs Vietnam.
                     </div>
                 `;
             }
 
-            // Cấu hình nhãn Badge cho Modal
             const badgeClass = article.type === 'case' ? 'badge-case' : `badge-${article.tag}`;
-            const badgeLabel = article.type === 'case' ? 'CASE STUDY' : article.tag.toUpperCase();
+            const badgeLabel = article.type === 'case' ? 'CASE STUDY' : article.tag.replace('-',' ').toUpperCase();
             document.getElementById('modalBadge').className = `badge ${badgeClass}`;
             document.getElementById('modalBadge').innerText = badgeLabel;
 
@@ -363,7 +392,6 @@
             document.getElementById('modalDate').innerText = formatDate(article.pubDate);
             document.getElementById('modalContent').innerHTML = htmlContent;
 
-            // Xử lý ảnh bài viết
             const modalImg = document.getElementById('modalImage');
             if (article.image) {
                 modalImg.src = article.image;
@@ -373,33 +401,32 @@
                 modalImg.style.display = 'none';
             }
 
-            // BÓC TÁCH VÀ RENDER PHẦN BÌNH LUẬN GIẢ LẬP TỪ AI-AGENT[cite: 1]
+            // XỬ LÝ VÀ BIÊN TẬP HỘP BÀN TRÒN CHUYÊN GIA AI TỪ CHUỖI n8n JSON
             const commentBox = document.getElementById('modalComments');
-            commentBox.innerHTML = ''; // Reset khung cũ
+            commentBox.innerHTML = ''; 
             
             let commentList = [];
             if (article.comments) {
                 try {
-                    // Giải nén text JSON trong Sheets trở lại thành Mảng dữ liệu[cite: 1]
                     commentList = typeof article.comments === 'string' ? JSON.parse(article.comments) : article.comments;
                 } catch(e) {
-                    console.warn("Dữ liệu comment chưa phải cấu trúc mảng AI Object, chuyển định dạng thô.");
+                    console.warn("Định dạng dữ liệu bình luận không đúng cấu trúc JSON Array.");
                 }
             }
 
             if (commentList && commentList.length > 0) {
                 let commentsHtml = `
-                    <h4 style="margin-top: 40px; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; border-bottom: 2px solid var(--ink); padding-bottom: 5px; text-transform: uppercase;">
-                        Thảo luận bàn tròn (${commentList.length})
+                    <h4 style="margin-top: 45px; margin-bottom: 20px; font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; border-bottom: 2px solid var(--ink); padding-bottom: 4px; text-transform: uppercase; font-weight:700; letter-spacing:0.5px;">
+                        Phản biện chiến lược từ Ban chuyên gia AI (${commentList.length})
                     </h4>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
                 `;
                 
                 commentList.forEach(cmt => {
                     commentsHtml += `
-                        <div style="background: #edeae0; padding: 15px; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0;">
-                            <strong style="display: block; color: var(--ink); margin-bottom: 4px; font-size: 0.95rem;">${cmt.author}</strong>
-                            <p style="margin: 0; color: #333; font-size: 0.9rem; line-height: 1.5; text-align: left;">${cmt.text}</p>
+                        <div style="background: #ede8df; padding: 18px; border-left: 4px solid var(--gold); border-radius: 0 4px 4px 0; border-top: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <strong style="display: block; color: var(--ink); margin-bottom: 5px; font-size: 1rem; letter-spacing:0.3px;">✦ ${cmt.author}</strong>
+                            <p style="margin: 0; color: #222; font-size: 0.95rem; line-height: 1.5; text-align: left;">${cmt.text}</p>
                         </div>
                     `;
                 });
@@ -407,38 +434,34 @@
                 commentBox.innerHTML = commentsHtml;
             } else {
                 commentBox.innerHTML = `
-                    <h4 style="margin-top: 40px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 5px; color:#666;">Thảo luận bàn tròn</h4>
-                    <p style="color:#777; font-style:italic; font-size:0.9rem;">Hệ thống chưa ghi nhận lượt thảo luận chuyên sâu nào cho thương vụ này.</p>
+                    <h4 style="margin-top: 45px; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 5px; color:#555; text-transform: uppercase;">Phản biện chiến lược từ Ban chuyên gia AI</h4>
+                    <p style="color:#666; font-style:italic; font-size:0.95rem;">Hệ thống chưa ghi nhận cuộc phản biện chuyên môn nào từ các Agent cho bài viết này.</p>
                 `;
             }
 
-            // Hiển thị khung Modal
             document.getElementById('articleModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        // Đóng cửa sổ Modal
+        // Đóng cửa sổ Modal bài viết
         function closeModal() {
             document.getElementById('articleModal').classList.remove('active');
             document.body.style.overflow = 'auto';
-            document.title = "Sandbox News — Tạp chí Phân tích Tài chính & Doanh nghiệp";
+            document.title = "The Sandbox Entrepreneurs Vietnam — SANDBOX.NEWS";
 
-            // Xóa chuỗi query trên link để trả lại URL sạch
             const url = new URL(window.location);
             url.searchParams.delete('article');
             window.history.pushState({}, '', url);
         }
 
-        // Kiểm tra Deep Link (?article=slug) khi mở trang
+        // Tự động giải mã đường link (?article=slug) để hiển thị bài viết khi mở link trực tiếp
         function checkDeepLink() {
             const params = new URLSearchParams(window.location.search);
             const articleSlug = params.get('article');
-            if (articleSlug) {
-                openModal(articleSlug);
-            }
+            if (articleSlug) openModal(articleSlug);
         }
 
-        // Định dạng ngày tháng
+        // Chuẩn hóa định dạng thời gian xuất bản
         function formatDate(dateStr) {
             if(!dateStr) return '';
             try {
@@ -448,7 +471,7 @@
             } catch(e) { return dateStr; }
         }
 
-        // Thuật toán chuyển đổi text Markdown thô sang cấu trúc HTML
+        // Công cụ biên dịch tự động cấu trúc văn bản Markdown thô sang thẻ HTML
         function markdownToHtml(markdown) {
             return markdown
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
