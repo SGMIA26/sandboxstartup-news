@@ -599,13 +599,31 @@ function markdownToHtml(text){
     .join('');
 }
 
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  // Parse Vietnamese date "3 tháng 6, 2026" hoặc ISO timestamp
+  let d;
+  if (dateStr.includes('T')) {
+    d = new Date(dateStr);
+  } else {
+    const m = dateStr.match(/(\d+) tháng (\d+),? (\d+)/);
+    if (m) d = new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]));
+  }
+  if (!d || isNaN(d)) return dateStr;
+  const diff = (Date.now() - d.getTime()) / 1000;
+  if (diff < 60)   return 'Vừa xong';
+  if (diff < 3600) return `${Math.floor(diff/60)} phút trước`;
+  if (diff < 86400) return `${Math.floor(diff/3600)} giờ trước`;
+  if (diff < 604800) return `${Math.floor(diff/86400)} ngày trước`;
+  return dateStr;
+}
+
 function badgeHtml(tag){ return `<span class="badge ${BADGE_CLASS[tag]||'badge-ma'}">${TAG_LABEL[tag]||tag}</span>`; }
 function thumbHtml(url,cls){
-  // Thử lấy ảnh từ URL, nếu lỗi dùng placeholder đẹp
   if(url && url.startsWith('http')){
-    return `<img class="${cls}" src="${url}" alt="" onerror="this.parentElement.querySelector('.${cls}-ph') && (this.style.display='none') || (this.outerHTML='<div class=\"${cls}-ph\">SANDBOX NEWS</div>')">`;
+    return '<img class="'+cls+'" src="'+url+'" alt="" onerror="this.style.display='none'">';
   }
-  return `<div class="${cls}-ph">SANDBOX NEWS</div>`;
+  return '<div class="'+cls+'-ph">SANDBOX NEWS</div>';
 }
 
 // Score pills
@@ -737,7 +755,10 @@ function openModal(slug){
   document.getElementById('modalTitle').textContent = a.title||'';
   document.getElementById('modalMeta').innerHTML = `<span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span>·</span><a class="modal-source-link" href="${a.sourceUrl}" target="_blank">Xem nguồn gốc →</a>`:''}`;
   document.getElementById('modalThumb').innerHTML = a.imageUrl?`<img class="modal-hero-img" src="${a.imageUrl}" alt="${a.title||''}" onerror="this.style.display='none'">`:`<div class="modal-hero-ph">SANDBOX NEWS</div>`;
-  document.getElementById('modalBody').innerHTML = markdownToHtml(a.body||'');
+  const bodyContent = a.body || a.excerpt || '';
+  document.getElementById('modalBody').innerHTML = bodyContent
+    ? markdownToHtml(bodyContent)
+    : '<p style="color:var(--ink-3);font-style:italic">Nội dung đang được cập nhật. <a href="'+a.sourceUrl+'" target="_blank" style="color:var(--gold)">Xem bài gốc →</a></p>';
   document.getElementById('modalSource').innerHTML = a.sourceUrl?`Nguồn tham khảo: <a href="${a.sourceUrl}" target="_blank" style="color:var(--gold)">${a.sourceUrl}</a>`:'';
 
   // Score panel
@@ -830,6 +851,7 @@ async function loadArticles(){
     businessScore:  Number(a.businessScore||a.business_impact_score)||0,
     investorScore:  Number(a.investorScore||a.investor_relevance_score)||0,
     viralityScore:  Number(a.viralityScore||a.virality_score)||0,
+    createdAt:      a.createdAt||a.created_at||'',
   });
 
   const mapCase = (a) => ({
@@ -850,6 +872,7 @@ async function loadArticles(){
     businessScore:  Number(a.businessScore)||0,
     investorScore:  0,
     viralityScore:  Number(a.viralityScore)||0,
+    createdAt:      a.createdAt||a.created_at||'',
   });
 
   try {
