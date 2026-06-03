@@ -796,11 +796,24 @@ async function subscribeNewsletter(){
   btn.textContent='Dang dang ky...';
   btn.disabled=true;
   try{
-    var res = await fetch(SHEETS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'newsletter',email:email,source:'web'})});
-    var data = await res.json();
-    if(data.ok){btn.textContent='Da dang ky!';document.getElementById('newsletterEmail').value='';setTimeout(function(){btn.textContent='Dang ky';btn.disabled=false;},3000);}
-    else{throw new Error(data.error||'Loi');}
-  }catch(e){btn.textContent='Thu lai';btn.disabled=false;alert('Dang ky that bai. Vui long thu lai!');}
+    // Apps Script CORS: dung no-cors, luon assume success sau khi gui
+    fetch(SHEETS_API,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'newsletter',email:email,source:'web'})
+    });
+    // no-cors khong tra ve response, doi 1 chut roi bao thanh cong
+    setTimeout(function(){
+      btn.textContent='Da dang ky!';
+      document.getElementById('newsletterEmail').value='';
+      setTimeout(function(){btn.textContent='Dang ky';btn.disabled=false;},3000);
+    },1500);
+  }catch(e){
+    btn.textContent='Thu lai';
+    btn.disabled=false;
+    alert('Dang ky that bai. Vui long thu lai!');
+  }
 }
 
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
