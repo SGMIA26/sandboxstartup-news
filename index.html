@@ -829,7 +829,7 @@ const SAMPLE = [
 async function loadArticles(){
   var mapArt = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tag||'thi-truong').trim().toLowerCase(),type:a.type||'news',
+    tag:(a.tag||'thi-truong').split('|')[0].trim().toLowerCase(),type:a.type||'news',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
@@ -842,7 +842,7 @@ async function loadArticles(){
   };};
   var mapCase = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tag||'ma').trim().toLowerCase(),type:'case',
+    tag:(a.tag||'ma').split('|')[0].trim().toLowerCase(),type:'case',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
