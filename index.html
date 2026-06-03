@@ -455,7 +455,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
         <div class="cta-sub">Định giá sơ bộ trong 5 phút — theo chuẩn Thông tư 36/2024</div>
       </div>
       <div class="cta-btns">
-        <button class="btn-outline" onclick="window.open('https://consult.sandboxstartup.vn','_blank')">Tư vấn cấu trúc</button>
+        <button class="btn-outline" onclick="window.open('https://zalo.me/1110831222679664093','_blank')">💬 Tư vấn qua Zalo</button>
         <button class="btn-dark" onclick="window.open('https://valuitbiz.sandboxstartup.vn','_blank')">Định giá ngay →</button>
       </div>
     </div>
@@ -472,7 +472,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
     <span class="footer-link">IPO</span>
     <span class="footer-link">Công Nghệ</span>
     <span class="footer-link">Tài Chính</span>
-    <span class="footer-link" onclick="window.location='mailto:news@sandboxstartup.vn'">Liên hệ</span>
+    <span class="footer-link" onclick="window.open('mailto:news@sandboxstartup.vn','_blank')">Liên hệ</span>
   </div>
   <div class="footer-sandbox">
     <div>
@@ -822,10 +822,31 @@ function copyLink(){
 
 function openCommentForm(){ window.open(`mailto:news@sandboxstartup.vn?subject=Bình luận bài viết: ${(currentArticle?.title||'')}`, '_blank'); }
 
-function subscribeNewsletter(){
+async function subscribeNewsletter(){
   const email = document.getElementById('newsletterEmail').value.trim();
   if(!email||!email.includes('@')){ alert('Vui lòng nhập email hợp lệ.'); return; }
-  window.open(`mailto:news@sandboxstartup.vn?subject=Đăng ký Newsletter&body=Email: ${email}`, '_blank');
+  const btn = document.querySelector('.newsletter-btn');
+  btn.textContent = 'Đang đăng ký...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(SHEETS_API, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'newsletter', email, source:'web' })
+    });
+    const data = await res.json();
+    if(data.ok){
+      btn.textContent = '✓ Đã đăng ký!';
+      document.getElementById('newsletterEmail').value = '';
+      setTimeout(()=>{ btn.textContent='Đăng ký →'; btn.disabled=false; }, 3000);
+    } else {
+      throw new Error(data.error||'Lỗi');
+    }
+  } catch(e) {
+    btn.textContent = 'Thử lại';
+    btn.disabled = false;
+    alert('Đăng ký thất bại. Vui lòng thử lại!');
+  }
 }
 
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
@@ -883,16 +904,19 @@ async function loadArticles(){
     const artData  = await artRes.json();
     const caseData = await caseRes.json();
 
+    console.log('[SandboxNews] articles:', artData.total, 'cases:', caseData.total||0);
+
     const arts  = (artData.ok  && artData.articles && artData.articles.length)
                   ? artData.articles.map(mapArt) : [];
     const cases = (caseData.ok && caseData.cases   && caseData.cases.length)
                   ? caseData.cases.map(mapCase) : [];
 
     ALL_ARTICLES = [...arts, ...cases];
+    console.log('[SandboxNews] Total loaded:', ALL_ARTICLES.length);
     if(!ALL_ARTICLES.length) ALL_ARTICLES = SAMPLE;
 
   } catch(e){
-    console.error('Load error:', e);
+    console.error('[SandboxNews] Load error:', e);
     ALL_ARTICLES = SAMPLE;
   }
 
