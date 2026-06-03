@@ -737,6 +737,13 @@ function openModal(slug){
   var a = ALL_ARTICLES.find(function(x){return x.slug===slug;});
   if(!a) return;
   currentArticle = a;
+  // Dynamic og: update for Facebook share
+  var ogImg = document.querySelector('meta[property="og:image"]');
+  var ogTitle = document.querySelector('meta[property="og:title"]');
+  var ogDesc = document.querySelector('meta[property="og:description"]');
+  if(ogImg && a.imageUrl) ogImg.setAttribute('content', a.imageUrl);
+  if(ogTitle && a.title) ogTitle.setAttribute('content', a.title + ' — Sandbox News');
+  if(ogDesc && a.excerpt) ogDesc.setAttribute('content', a.excerpt.substring(0,160));
   document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
   document.getElementById('modalTitle').textContent = a.title||'';
   document.getElementById('modalMeta').innerHTML = '<span>'+(a.date||'')+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span>-</span><a class="modal-source-link" href="'+a.sourceUrl+'" target="_blank">Xem nguon goc</a>':'');
