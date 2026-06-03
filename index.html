@@ -547,14 +547,12 @@ let currentSearch = '';
 let currentArticle = null;
 
 const TAG_LABEL = {
-  ma:'M&A','dinh-gia':'Định giá',holding:'Holding',thue:'Thuế & Pháp lý',
-  'thi-truong':'Thị trường',ipo:'IPO',startup:'Startup',case:'Case Study',
-  finance:'Tài chính','cong-nghe':'Công Nghệ','tai-chinh':'Tài Chính',
-  // Aliases từ AI tạo ra
-  'chung-khoan':'Thị trường','chứng khoán':'Thị trường',
-  'cong-nghe-thong-tin':'Công Nghệ','fintech':'Tài Chính',
-  'kinh-doanh':'Thị trường','dau-tu':'M&A','ngan-hang':'Tài Chính',
-  'bat-dong-san':'Thị trường','phap-ly':'Thuế & Pháp lý',
+  ma:'M&A','dinh-gia':'Dinh gia',holding:'Holding',thue:'Thue & Phap ly',
+  'thi-truong':'Thi truong',ipo:'IPO',startup:'Startup',case:'Case Study',
+  finance:'Tai chinh','cong-nghe':'Cong Nghe','tai-chinh':'Tai Chinh',
+  'chung-khoan':'Thi truong','fintech':'Tai Chinh',
+  'kinh-doanh':'Thi truong','dau-tu':'M&A','ngan-hang':'Tai Chinh',
+  'bat-dong-san':'Thi truong','phap-ly':'Thue & Phap ly',
 };
 const BADGE_CLASS = {
   ma:'badge-ma','dinh-gia':'badge-dinh-gia',holding:'badge-holding',thue:'badge-thue',
@@ -563,25 +561,24 @@ const BADGE_CLASS = {
   'chung-khoan':'badge-thi-truong','fintech':'badge-tai-chinh',
   'kinh-doanh':'badge-thi-truong','dau-tu':'badge-ma','ngan-hang':'badge-tai-chinh',
 };
-const SECTION_ACCENT = {
-  'cong-nghe':'tech','tai-chinh':'fin'
-};
+const SECTION_ACCENT = {'cong-nghe':'tech','tai-chinh':'fin'};
 
-const AI_NAMES=['Nguyễn Minh Tuấn','Trần Thị Lan','Lê Văn Hùng','Phạm Thu Hà','Đỗ Quốc Bảo','Vũ Thị Mai','Hoàng Anh Dũng','Bùi Thanh Thảo','Ngô Văn Long','Đinh Thị Ngọc'];
+const AI_NAMES=['Nguyen Minh Tuan','Tran Thi Lan','Le Van Hung','Pham Thu Ha','Do Quoc Bao','Vu Thi Mai','Hoang Anh Dung','Bui Thanh Thao','Ngo Van Long','Dinh Thi Ngoc'];
 const AI_COMMENTS_POOL=[
-  'Bài viết rất sâu sắc và thực tiễn. Đây chính xác là loại thông tin mà chúng tôi cần khi chuẩn bị gọi vốn.',
-  'Phân tích rất chuẩn xác. Tôi sẽ chia sẻ ngay với nhóm lãnh đạo để thảo luận thêm.',
-  'Cảm ơn Sandbox đã đưa ra góc nhìn thực tế như vậy. Bài học áp dụng tốt cho doanh nghiệp vừa và nhỏ.',
-  'Nội dung chất lượng cao. Tôi đang trong quá trình tái cơ cấu và bài này cho tôi thêm nhiều insight.',
-  'Sandbox luôn có những bài phân tích mà tôi không tìm được ở nơi nào khác. Tiếp tục phát huy!',
-  'Góc nhìn về Holding rất thực tế. Hiện có nơi nào ở Việt Nam phân tích sâu như thế này không?',
-  'Đây là gốc nhìn tôi cần. Đang chuẩn bị cho thương vụ M&A và bài này giải đáp nhiều thắc mắc.',
+  'Bai viet rat sau sac va thuc tien. Day chinh xac la loai thong tin ma chung toi can khi chuan bi goi von.',
+  'Phan tich rat chuan xac. Toi se chia se ngay voi nhom lanh dao de thao luan them.',
+  'Cam on Sandbox da dua ra goc nhin thuc te nhu vay. Bai hoc ap dung tot cho doanh nghiep vua va nho.',
+  'Noi dung chat luong cao. Toi dang trong qua trinh tai co cau va bai nay cho toi them nhieu insight.',
+  'Sandbox luon co nhung bai phan tich ma toi khong tim duoc o noi nao khac. Tiep tuc phat huy!',
+  'Goc nhin ve Holding rat thuc te. Hien co noi nao o Viet Nam phan tich sau nhu the nay khong?',
+  'Day la goc nhin toi can. Dang chuan bi cho thuong vu M&A va bai nay giai dap nhieu thac mac.',
 ];
 
-function getRandomComments(n=3){
-  const s=[...AI_NAMES].sort(()=>Math.random()-.5);
-  const c=[...AI_COMMENTS_POOL].sort(()=>Math.random()-.5);
-  return Array.from({length:n},(_,i)=>({name:s[i],initial:s[i][0],text:c[i],time:`${Math.floor(Math.random()*23)+1} giờ trước`}));
+function getRandomComments(n){
+  n=n||3;
+  var s=[].concat(AI_NAMES).sort(function(){return Math.random()-.5});
+  var c=[].concat(AI_COMMENTS_POOL).sort(function(){return Math.random()-.5});
+  return Array.from({length:n},function(_,i){return {name:s[i],initial:s[i][0],text:c[i],time:Math.floor(Math.random()*23+1)+' gio truoc'};});
 }
 
 function markdownToHtml(text){
@@ -594,90 +591,84 @@ function markdownToHtml(text){
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/^---$/gm,'<hr style="border:none;border-top:1px solid var(--rule);margin:1.5rem 0">')
     .replace(/\n\n/g,'</p><p>')
-    .split('\n').map(l=>l.trim()).filter(Boolean)
-    .map(l=>l.startsWith('<')?l:`<p>${l}</p>`)
+    .split('\n').map(function(l){return l.trim();}).filter(Boolean)
+    .map(function(l){return l.startsWith('<')?l:'<p>'+l+'</p>';})
     .join('');
 }
 
-function timeAgo(dateStr) {
-  if (!dateStr) return '';
-  // Parse Vietnamese date "3 tháng 6, 2026" hoặc ISO timestamp
-  let d;
-  if (dateStr.includes('T')) {
-    d = new Date(dateStr);
-  } else {
-    const m = dateStr.match(/(\d+) tháng (\d+),? (\d+)/);
-    if (m) d = new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]));
-  }
-  if (!d || isNaN(d)) return dateStr;
-  const diff = (Date.now() - d.getTime()) / 1000;
-  if (diff < 60)   return 'Vừa xong';
-  if (diff < 3600) return `${Math.floor(diff/60)} phút trước`;
-  if (diff < 86400) return `${Math.floor(diff/3600)} giờ trước`;
-  if (diff < 604800) return `${Math.floor(diff/86400)} ngày trước`;
-  return dateStr;
+function badgeHtml(tag){
+  var cls = BADGE_CLASS[tag]||'badge-ma';
+  var lbl = TAG_LABEL[tag]||tag;
+  return '<span class="badge '+cls+'">'+lbl+'</span>';
 }
 
-function badgeHtml(tag){ return `<span class="badge ${BADGE_CLASS[tag]||'badge-ma'}">${TAG_LABEL[tag]||tag}</span>`; }
 function thumbHtml(url,cls){
   if(url && url.startsWith('http')){
-    return '<img class="'+cls+'" src="'+url+'" alt="" onerror="this.style.display='none'">';
+    return '<img class="'+cls+'" src="'+url+'" alt="">';
   }
   return '<div class="'+cls+'-ph">SANDBOX NEWS</div>';
 }
 
-// Score pills
 function scorePillsHtml(a){
   if(!a.importanceScore&&!a.businessScore) return '';
-  return `<div class="score-row">
-    ${a.importanceScore?`<span class="score-pill score-imp">Quan trọng: ${a.importanceScore}/10</span>`:''}
-    ${a.businessScore?`<span class="score-pill score-biz">Tác động: ${a.businessScore}/10</span>`:''}
-    ${a.viralityScore?`<span class="score-pill score-viral">Viral: ${a.viralityScore}/10</span>`:''}
-  </div>`;
+  var h='<div class="score-row">';
+  if(a.importanceScore) h+='<span class="score-pill score-imp">Quan trong: '+a.importanceScore+'/10</span>';
+  if(a.businessScore)   h+='<span class="score-pill score-biz">Tac dong: '+a.businessScore+'/10</span>';
+  if(a.viralityScore)   h+='<span class="score-pill score-viral">Viral: '+a.viralityScore+'/10</span>';
+  h+='</div>';
+  return h;
 }
 
-// Date
+function timeAgo(dateStr){
+  if(!dateStr) return '';
+  var d;
+  if(dateStr.indexOf('T')>-1){d=new Date(dateStr);}
+  else{var m=dateStr.match(/(\d+) thang (\d+),? (\d+)/);if(m)d=new Date(parseInt(m[3]),parseInt(m[2])-1,parseInt(m[1]));}
+  if(!d||isNaN(d)) return dateStr;
+  var diff=(Date.now()-d.getTime())/1000;
+  if(diff<60) return 'Vua xong';
+  if(diff<3600) return Math.floor(diff/60)+' phut truoc';
+  if(diff<86400) return Math.floor(diff/3600)+' gio truoc';
+  if(diff<604800) return Math.floor(diff/86400)+' ngay truoc';
+  return dateStr;
+}
+
 document.getElementById('mastDate').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
 
-// NAV
-document.querySelectorAll('.nav-item[data-filter]').forEach(el=>{
-  el.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+document.querySelectorAll('.nav-item[data-filter]').forEach(function(el){
+  el.addEventListener('click',function(){
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
     el.classList.add('active');
     currentFilter = el.dataset.filter;
     currentType = el.dataset.type;
     applyFilters();
   });
 });
-document.getElementById('searchInput').addEventListener('input',e=>{
+document.getElementById('searchInput').addEventListener('input',function(e){
   currentSearch = e.target.value.toLowerCase().trim();
   applyFilters();
 });
 
 function getFiltered(){
-  return ALL_ARTICLES.filter(a=>{
-    const type = a.type||'news';
-    const matchType = currentType==='case' ? type==='case' : type!=='case';
-    const matchFilter = currentFilter==='all'||a.tag===currentFilter||(currentFilter==='case'&&type==='case');
-    const matchQ = !currentSearch||(a.title||'').toLowerCase().includes(currentSearch)||(a.excerpt||'').toLowerCase().includes(currentSearch);
+  return ALL_ARTICLES.filter(function(a){
+    var type = a.type||'news';
+    var matchType = currentType==='case' ? type==='case' : type!=='case';
+    var matchFilter = currentFilter==='all'||a.tag===currentFilter||(currentFilter==='case'&&type==='case');
+    var matchQ = !currentSearch||(a.title||'').toLowerCase().indexOf(currentSearch)>-1||(a.excerpt||'').toLowerCase().indexOf(currentSearch)>-1;
     return matchType&&matchFilter&&matchQ;
   });
 }
 
 function applyFilters(){
-  const filtered = getFiltered();
-  const newsItems = filtered.filter(a=>(a.type||'news')!=='case');
-  const caseItems = filtered.filter(a=>a.type==='case');
-  const showingCases = currentType==='case';
-
-  // Section head accent
-  const sh = document.getElementById('mainSectionHead');
+  var filtered = getFiltered();
+  var newsItems = filtered.filter(function(a){return (a.type||'news')!=='case';});
+  var caseItems = filtered.filter(function(a){return a.type==='case';});
+  var showingCases = currentType==='case';
+  var sh = document.getElementById('mainSectionHead');
   sh.className = 'section-head';
-  const accent = SECTION_ACCENT[currentFilter];
+  var accent = SECTION_ACCENT[currentFilter];
   if(accent) sh.classList.add(accent);
-
-  document.getElementById('sectionLabel').textContent = showingCases?'Case Study chuyên sâu':(currentFilter==='all'?'Bài viết mới nhất':TAG_LABEL[currentFilter]||'Bài viết');
-
+  document.getElementById('sectionLabel').textContent = showingCases?'Case Study chuyen sau':(currentFilter==='all'?'Bai viet moi nhat':TAG_LABEL[currentFilter]||'Bai viet');
   if(showingCases){
     renderCases(caseItems);
     document.getElementById('articleGrid').innerHTML='';
@@ -692,243 +683,186 @@ function applyFilters(){
 }
 
 function renderHero(articles){
-  const hero = document.getElementById('heroSection');
-  if(!articles.length){ hero.innerHTML='<div class="empty-state">Chưa có bài viết cho chủ đề này.</div>'; return; }
-  const a = articles[0];
-  const sides = articles.slice(1,4);
-  hero.innerHTML=`
-    <div class="hero" style="padding:2.5rem 0">
-      <div class="hero-grid">
-        <div class="hero-main">
-          ${thumbHtml(a.imageUrl,'hero-thumb')}
-          ${badgeHtml(a.tag)}
-          <div class="hero-title" onclick="openModal('${a.slug}')">${a.title||''}</div>
-          <div class="hero-excerpt">${a.excerpt||''}</div>
-          <div class="hero-meta"><span>${a.date||''}</span><span class="sep">·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span class="sep">·</span><span style="color:var(--gold);font-size:10px">${a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]}</span>`:''}</div>
-          ${scorePillsHtml(a)}
-          <span class="hero-readmore" onclick="openModal('${a.slug}')">Đọc bài viết →</span>
-        </div>
-        <div class="hero-side">
-          <div class="side-label">Đọc nhiều nhất</div>
-          ${sides.map((s,i)=>`<div class="side-story"><div class="side-num">0${i+1}</div><div class="side-cat">${TAG_LABEL[s.tag]||s.tag}</div><div class="side-title" onclick="openModal('${s.slug}')">${s.title||''}</div><div class="side-meta">${s.date||''} · ${s.readTime||''}</div></div>`).join('')}
-        </div>
-      </div>
-    </div>`;
+  var hero = document.getElementById('heroSection');
+  if(!articles.length){hero.innerHTML='<div class="empty-state">Chua co bai viet cho chu de nay.</div>';return;}
+  var a = articles[0];
+  var sides = articles.slice(1,4);
+  var sidesHtml = sides.map(function(s,i){
+    return '<div class="side-story"><div class="side-num">0'+(i+1)+'</div>'
+      +'<div class="side-cat">'+(TAG_LABEL[s.tag]||s.tag)+'</div>'
+      +'<div class="side-title" onclick="openModal(\''+s.slug+'\')">'+(s.title||'')+'</div>'
+      +'<div class="side-meta">'+(timeAgo(s.createdAt||s.date||''))+' - '+(s.readTime||'')+'</div></div>';
+  }).join('');
+  hero.innerHTML='<div class="hero" style="padding:2.5rem 0"><div class="hero-grid">'
+    +'<div class="hero-main">'+thumbHtml(a.imageUrl,'hero-thumb')
+    +badgeHtml(a.tag)
+    +'<div class="hero-title" onclick="openModal(\''+a.slug+'\')">'+(a.title||'')+'</div>'
+    +'<div class="hero-excerpt">'+(a.excerpt||'')+'</div>'
+    +'<div class="hero-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span class="sep">-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="sep">-</span><span style="color:var(--gold);font-size:10px">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
+    +scorePillsHtml(a)
+    +'<span class="hero-readmore" onclick="openModal(\''+a.slug+'\')">Doc bai viet</span>'
+    +'</div><div class="hero-side"><div class="side-label">Doc nhieu nhat</div>'+sidesHtml+'</div>'
+    +'</div></div>';
 }
 
 function renderGrid(articles){
-  const grid = document.getElementById('articleGrid');
-  const list = articles.slice(1);
-  if(!list.length){ grid.innerHTML=''; return; }
-  grid.innerHTML = list.map(a=>`
-    <div class="art-card" onclick="openModal('${a.slug}')">
-      ${thumbHtml(a.imageUrl,'art-thumb')}
-      ${badgeHtml(a.tag)}
-      <div class="art-title">${a.title||''}</div>
-      <div class="art-excerpt">${a.excerpt||''}</div>
-      <div class="art-meta"><span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span class="art-source">${a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]}</span>`:''}</div>
-      ${scorePillsHtml(a)}
-    </div>`).join('');
+  var grid = document.getElementById('articleGrid');
+  var list = articles.slice(1);
+  if(!list.length){grid.innerHTML='';return;}
+  grid.innerHTML = list.map(function(a){
+    return '<div class="art-card" onclick="openModal(\''+a.slug+'\')">'
+      +thumbHtml(a.imageUrl,'art-thumb')
+      +badgeHtml(a.tag)
+      +'<div class="art-title">'+(a.title||'')+'</div>'
+      +'<div class="art-excerpt">'+(a.excerpt||'')+'</div>'
+      +'<div class="art-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="art-source">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
+      +scorePillsHtml(a)+'</div>';
+  }).join('');
 }
 
 function renderCases(cases){
-  const list = document.getElementById('casesList');
-  if(!cases.length){ list.innerHTML='<div class="empty-state">Chưa có case study nào. Paste link vào Telegram bot để tạo.</div>'; return; }
-  list.innerHTML = cases.map(a=>`
-    <div class="case-card" onclick="openModal('${a.slug}')">
-      ${a.imageUrl?`<img class="case-thumb-sm" src="${a.imageUrl}" alt="" onerror="this.style.display='none'">`:`<div class="case-thumb-ph">CASE</div>`}
-      <div>
-        ${badgeHtml(a.tag)}
-        <div class="case-title">${a.title||''}</div>
-        <div class="case-excerpt">${a.excerpt||''}</div>
-        <div class="case-meta"><span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span></div>
-      </div>
-    </div>`).join('');
+  var list = document.getElementById('casesList');
+  if(!cases.length){list.innerHTML='<div class="empty-state">Chua co case study nao. Paste link vao Telegram bot de tao.</div>';return;}
+  list.innerHTML = cases.map(function(a){
+    return '<div class="case-card" onclick="openModal(\''+a.slug+'\')">'
+      +(a.imageUrl?'<img class="case-thumb-sm" src="'+a.imageUrl+'" alt="">':'<div class="case-thumb-ph">CASE</div>')
+      +'<div>'+badgeHtml(a.tag)+'<div class="case-title">'+(a.title||'')+'</div>'
+      +'<div class="case-excerpt">'+(a.excerpt||'')+'</div>'
+      +'<div class="case-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span></div>'
+      +'</div></div>';
+  }).join('');
 }
 
 function openModal(slug){
-  const a = ALL_ARTICLES.find(x=>x.slug===slug);
+  var a = ALL_ARTICLES.find(function(x){return x.slug===slug;});
   if(!a) return;
   currentArticle = a;
-
   document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
   document.getElementById('modalTitle').textContent = a.title||'';
-  document.getElementById('modalMeta').innerHTML = `<span>${a.date||''}</span><span>·</span><span>${a.readTime||''}</span>${a.sourceUrl?`<span>·</span><a class="modal-source-link" href="${a.sourceUrl}" target="_blank">Xem nguồn gốc →</a>`:''}`;
-  document.getElementById('modalThumb').innerHTML = a.imageUrl?`<img class="modal-hero-img" src="${a.imageUrl}" alt="${a.title||''}" onerror="this.style.display='none'">`:`<div class="modal-hero-ph">SANDBOX NEWS</div>`;
-  const bodyContent = a.body || a.excerpt || '';
-  document.getElementById('modalBody').innerHTML = bodyContent
-    ? markdownToHtml(bodyContent)
-    : '<p style="color:var(--ink-3);font-style:italic">Nội dung đang được cập nhật. <a href="'+a.sourceUrl+'" target="_blank" style="color:var(--gold)">Xem bài gốc →</a></p>';
-  document.getElementById('modalSource').innerHTML = a.sourceUrl?`Nguồn tham khảo: <a href="${a.sourceUrl}" target="_blank" style="color:var(--gold)">${a.sourceUrl}</a>`:'';
-
-  // Score panel
-  const sp = document.getElementById('modalScorePanel');
+  document.getElementById('modalMeta').innerHTML = '<span>'+(a.date||'')+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span>-</span><a class="modal-source-link" href="'+a.sourceUrl+'" target="_blank">Xem nguon goc</a>':'');
+  document.getElementById('modalThumb').innerHTML = a.imageUrl?'<img class="modal-hero-img" src="'+a.imageUrl+'" alt="'+(a.title||'')+'">':'<div class="modal-hero-ph">SANDBOX NEWS</div>';
+  var bodyContent = a.body||a.excerpt||'';
+  document.getElementById('modalBody').innerHTML = bodyContent ? markdownToHtml(bodyContent) : '<p style="color:var(--ink-3);font-style:italic">Noi dung dang duoc cap nhat. <a href="'+(a.sourceUrl||'#')+'" target="_blank" style="color:var(--gold)">Xem bai goc</a></p>';
+  document.getElementById('modalSource').innerHTML = a.sourceUrl?'Nguon tham khao: <a href="'+a.sourceUrl+'" target="_blank" style="color:var(--gold)">'+a.sourceUrl+'</a>':'';
+  var sp = document.getElementById('modalScorePanel');
   if(a.importanceScore||a.businessScore||a.investorScore||a.viralityScore){
     sp.style.display='grid';
-    document.getElementById('scoreImp').textContent = a.importanceScore||'—';
-    document.getElementById('scoreBiz').textContent = a.businessScore||'—';
-    document.getElementById('scoreInv').textContent = a.investorScore||'—';
-    document.getElementById('scoreVir').textContent = a.viralityScore||'—';
-  } else { sp.style.display='none'; }
-
-  // Takeaways
-  const tw = document.getElementById('modalTakeaways');
+    document.getElementById('scoreImp').textContent = a.importanceScore||'-';
+    document.getElementById('scoreBiz').textContent = a.businessScore||'-';
+    document.getElementById('scoreInv').textContent = a.investorScore||'-';
+    document.getElementById('scoreVir').textContent = a.viralityScore||'-';
+  } else {sp.style.display='none';}
+  var tw = document.getElementById('modalTakeaways');
   if(a.keyTakeaways&&a.keyTakeaways.length){
     tw.style.display='block';
-    tw.innerHTML=`<div class="takeaways-box"><div class="takeaways-label">Key Takeaways</div><ul class="takeaways-list">${a.keyTakeaways.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
-  } else { tw.style.display='none'; }
-
-  // Insight
-  const ins = document.getElementById('modalInsight');
-  if(a.insight){ ins.style.display='block'; document.getElementById('modalInsightText').textContent=a.insight; }
-  else { ins.style.display='none'; }
-
-  // AI Comments
-  const comments = getRandomComments(3);
-  document.getElementById('aiComments').innerHTML = comments.map(c=>`
-    <div class="ai-comment">
-      <div class="ai-comment-header">
-        <div class="ai-avatar">${c.initial}</div>
-        <div><div class="ai-name">${c.name}</div><div class="ai-time">${c.time}</div></div>
-      </div>
-      <div class="ai-text">${c.text}</div>
-    </div>`).join('');
-
+    tw.innerHTML='<div class="takeaways-box"><div class="takeaways-label">Key Takeaways</div><ul class="takeaways-list">'+a.keyTakeaways.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div>';
+  } else {tw.style.display='none';}
+  var ins = document.getElementById('modalInsight');
+  if(a.insight){ins.style.display='block';document.getElementById('modalInsightText').textContent=a.insight;}
+  else {ins.style.display='none';}
+  var comments = getRandomComments(3);
+  document.getElementById('aiComments').innerHTML = comments.map(function(c){
+    return '<div class="ai-comment"><div class="ai-comment-header"><div class="ai-avatar">'+c.initial+'</div><div><div class="ai-name">'+c.name+'</div><div class="ai-time">'+c.time+'</div></div></div><div class="ai-text">'+c.text+'</div></div>';
+  }).join('');
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
-
-  // Update OG dynamically
-  document.title = `${a.title||'Sandbox.News'} — Sandbox.News`;
+  document.title = (a.title||'Sandbox.News')+' - Sandbox.News';
 }
 
 function closeModal(){
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow='';
-  document.title = 'Sandbox.News — M&A · Khởi Nghiệp · Đầu Tư · Công Nghệ · Tài Chính';
+  document.title = 'Sandbox.News - M&A - Khoi Nghiep - Dau Tu - Cong Nghe - Tai Chinh';
 }
 
 function shareFacebook(){
-  const url = currentArticle?`https://sandboxstartup.vn`:'https://sandboxstartup.vn';
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank','width=600,height=400');
+  window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('https://sandboxstartup.vn'),'_blank','width=600,height=400');
 }
 
 function copyLink(){
-  navigator.clipboard.writeText('https://sandboxstartup.vn').then(()=>{
-    const btn = document.querySelector('.share-copy');
-    btn.textContent='✓ Đã copy!';
-    setTimeout(()=>btn.textContent='📋 Copy link',2000);
+  navigator.clipboard.writeText('https://sandboxstartup.vn').then(function(){
+    var btn = document.querySelector('.share-copy');
+    btn.textContent='Da copy!';
+    setTimeout(function(){btn.textContent='Copy link';},2000);
   });
 }
 
-function openCommentForm(){ window.open(`mailto:news@sandboxstartup.vn?subject=Bình luận bài viết: ${(currentArticle?.title||'')}`, '_blank'); }
+function openCommentForm(){window.open('mailto:news@sandboxstartup.vn?subject=Binh luan bai viet: '+(currentArticle&&currentArticle.title||''),'_blank');}
 
 async function subscribeNewsletter(){
-  const email = document.getElementById('newsletterEmail').value.trim();
-  if(!email||!email.includes('@')){ alert('Vui lòng nhập email hợp lệ.'); return; }
-  const btn = document.querySelector('.newsletter-btn');
-  btn.textContent = 'Đang đăng ký...';
-  btn.disabled = true;
-  try {
-    const res = await fetch(SHEETS_API, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ action:'newsletter', email, source:'web' })
-    });
-    const data = await res.json();
-    if(data.ok){
-      btn.textContent = '✓ Đã đăng ký!';
-      document.getElementById('newsletterEmail').value = '';
-      setTimeout(()=>{ btn.textContent='Đăng ký →'; btn.disabled=false; }, 3000);
-    } else {
-      throw new Error(data.error||'Lỗi');
-    }
-  } catch(e) {
-    btn.textContent = 'Thử lại';
-    btn.disabled = false;
-    alert('Đăng ký thất bại. Vui lòng thử lại!');
-  }
+  var email = document.getElementById('newsletterEmail').value.trim();
+  if(!email||email.indexOf('@')<0){alert('Vui long nhap email hop le.');return;}
+  var btn = document.querySelector('.newsletter-btn');
+  btn.textContent='Dang dang ky...';
+  btn.disabled=true;
+  try{
+    var res = await fetch(SHEETS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'newsletter',email:email,source:'web'})});
+    var data = await res.json();
+    if(data.ok){btn.textContent='Da dang ky!';document.getElementById('newsletterEmail').value='';setTimeout(function(){btn.textContent='Dang ky';btn.disabled=false;},3000);}
+    else{throw new Error(data.error||'Loi');}
+  }catch(e){btn.textContent='Thu lai';btn.disabled=false;alert('Dang ky that bai. Vui long thu lai!');}
 }
 
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-// FETCH DATA — gọi cả articles + cases cùng lúc
+const SAMPLE = [
+  {slug:'sample-1',title:'Lan song M&A nganh F&B 2026: Co hoi but pha cho SME Viet',excerpt:'Nam 2026 danh dau mot buoc chuyen minh manh me trong buc tranh mua ban sap nhap nganh F&B tai Viet Nam.',body:'Nam 2026 danh dau...\n\n## 1. Buc tranh thi truong\n\nNganh thuc pham va do uong Viet Nam dang hut von ngoai tu Nhat Ban, Han Quoc va Singapore.',tag:'ma',type:'news',date:'2 thang 6, 2026',readTime:'6 phut doc',sourceUrl:'https://cafebiz.vn',imageUrl:'',importanceScore:8,businessScore:9,investorScore:8,viralityScore:7,keyTakeaways:['M&A nganh F&B tang 40% so voi 2025','Nha dau tu Nhat va Han dan dau xu huong'],insight:'Day la thoi diem vang de doanh nghiep F&B chuan bi cho exit hoac goi von chien luoc.'},
+  {slug:'sample-2',title:'EV/EBITDA - Chi so dinh gia quan trong nhat khi ban doanh nghiep',excerpt:'Phuong phap EV/EBITDA dang tro thanh chuan muc dinh gia SME Viet Nam.',body:'EV/EBITDA la chi so tai chinh...',tag:'dinh-gia',type:'news',date:'31 thang 5, 2026',readTime:'5 phut doc',sourceUrl:'https://vneconomy.vn',imageUrl:'',importanceScore:7,businessScore:8,investorScore:9,viralityScore:6,keyTakeaways:['EV/EBITDA binh quan nganh ban le VN: 7.2x']},
+  {slug:'sample-3',title:'IPO Viet Nam Q2/2026: 12 Doanh Nghiep Dang Ky Niem Yet',excerpt:'Danh sach 12 doanh nghiep dang ky IPO trong quy 2/2026.',body:'Thi truong IPO Viet Nam dang soi dong tro lai...',tag:'ipo',type:'news',date:'29 thang 5, 2026',readTime:'5 phut doc',sourceUrl:'https://cafebiz.vn',imageUrl:'',importanceScore:7,businessScore:7,investorScore:9,viralityScore:6},
+  {slug:'sample-4',title:'Fintech Viet Nam 2026: Von Hoa 4.2 Ty USD',excerpt:'Nganh tai chinh cong nghe Viet Nam dang but pha manh me.',body:'Bao cao Fintech Viet Nam 2026...',tag:'tai-chinh',type:'news',date:'2 thang 6, 2026',readTime:'8 phut doc',sourceUrl:'https://vneconomy.vn',imageUrl:'',importanceScore:9,businessScore:8,investorScore:9,viralityScore:8},
+];
+
 async function loadArticles(){
-  const mapArt = (a) => ({
-    slug:           a.slug||'',
-    title:          a.title||'',
-    excerpt:        a.excerpt||'',
-    body:           a.body||'',
-    tag:            (a.tag||'thi-truong').trim().toLowerCase(),
-    type:           a.type||'news',
-    date:           a.date||'',
-    readTime:       a.readTime||a.read_time||'',
-    sourceUrl:      a.sourceUrl||a.source_url||'',
-    imageUrl:       a.imageUrl||a.image_url||'',
-    insight:        a.insight||'',
-    keyTakeaways:   Array.isArray(a.keyTakeaways) ? a.keyTakeaways :
-                    (a.key_takeaways||'').split('|').map(s=>s.trim()).filter(Boolean),
+  var mapArt = function(a){return {
+    slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
+    tag:(a.tag||'thi-truong').trim().toLowerCase(),type:a.type||'news',
+    date:a.date||'',readTime:a.readTime||a.read_time||'',
+    sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
+    insight:a.insight||'',
+    keyTakeaways:Array.isArray(a.keyTakeaways)?a.keyTakeaways:(a.key_takeaways||'').split('|').map(function(s){return s.trim();}).filter(Boolean),
     importanceScore:Number(a.importanceScore||a.importance_score)||0,
-    businessScore:  Number(a.businessScore||a.business_impact_score)||0,
-    investorScore:  Number(a.investorScore||a.investor_relevance_score)||0,
-    viralityScore:  Number(a.viralityScore||a.virality_score)||0,
-    createdAt:      a.createdAt||a.created_at||'',
-  });
-
-  const mapCase = (a) => ({
-    slug:           a.slug||'',
-    title:          a.title||'',
-    excerpt:        a.excerpt||'',
-    body:           a.body||'',
-    tag:            (a.tag||'ma').trim().toLowerCase(),
-    type:           'case',
-    date:           a.date||'',
-    readTime:       a.readTime||a.read_time||'',
-    sourceUrl:      a.sourceUrl||a.source_url||'',
-    imageUrl:       a.imageUrl||a.image_url||'',
-    insight:        a.insight||'',
-    keyTakeaways:   Array.isArray(a.keyTakeaways) ? a.keyTakeaways :
-                    (a.key_takeaways||'').split('|').map(s=>s.trim()).filter(Boolean),
-    importanceScore:Number(a.importanceScore)||0,
-    businessScore:  Number(a.businessScore)||0,
-    investorScore:  0,
-    viralityScore:  Number(a.viralityScore)||0,
-    createdAt:      a.createdAt||a.created_at||'',
-  });
-
-  try {
-    const [artRes, caseRes] = await Promise.all([
-      fetch(SHEETS_API + '?action=articles&limit=50&status=published'),
-      fetch(SHEETS_API + '?action=cases&limit=20')
+    businessScore:Number(a.businessScore||a.business_score)||0,
+    investorScore:Number(a.investorScore||a.investor_score)||0,
+    viralityScore:Number(a.viralityScore||a.virality_score)||0,
+    createdAt:a.createdAt||a.created_at||'',
+  };};
+  var mapCase = function(a){return {
+    slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
+    tag:(a.tag||'ma').trim().toLowerCase(),type:'case',
+    date:a.date||'',readTime:a.readTime||a.read_time||'',
+    sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
+    insight:a.insight||'',
+    keyTakeaways:Array.isArray(a.keyTakeaways)?a.keyTakeaways:[],
+    importanceScore:Number(a.importanceScore)||0,businessScore:Number(a.businessScore)||0,
+    investorScore:0,viralityScore:Number(a.viralityScore)||0,
+    createdAt:a.createdAt||a.created_at||'',
+  };};
+  try{
+    var results = await Promise.all([
+      fetch(SHEETS_API+'?action=articles&limit=50&status=published'),
+      fetch(SHEETS_API+'?action=cases&limit=20')
     ]);
-    const artData  = await artRes.json();
-    const caseData = await caseRes.json();
-
-    console.log('[SandboxNews] articles:', artData.total, 'cases:', caseData.total||0);
-
-    const arts  = (artData.ok  && artData.articles && artData.articles.length)
-                  ? artData.articles.map(mapArt) : [];
-    const cases = (caseData.ok && caseData.cases   && caseData.cases.length)
-                  ? caseData.cases.map(mapCase) : [];
-
-    ALL_ARTICLES = [...arts, ...cases];
-    console.log('[SandboxNews] Total loaded:', ALL_ARTICLES.length);
-    if(!ALL_ARTICLES.length) ALL_ARTICLES = SAMPLE;
-
-  } catch(e){
-    console.error('[SandboxNews] Load error:', e);
-    ALL_ARTICLES = SAMPLE;
+    var artData = await results[0].json();
+    var caseData = await results[1].json();
+    console.log('[SandboxNews] articles:',artData.total,'cases:',caseData.total||0);
+    var arts=(artData.ok&&artData.articles&&artData.articles.length)?artData.articles.map(mapArt):[];
+    var cases=(caseData.ok&&caseData.cases&&caseData.cases.length)?caseData.cases.map(mapCase):[];
+    ALL_ARTICLES=[].concat(arts,cases);
+    if(!ALL_ARTICLES.length) ALL_ARTICLES=SAMPLE;
+  }catch(e){
+    console.error('[SandboxNews] Load error:',e);
+    ALL_ARTICLES=SAMPLE;
   }
-
-  const newsCount = ALL_ARTICLES.filter(a=>a.type!=='case').length;
-  const caseCount = ALL_ARTICLES.filter(a=>a.type==='case').length;
-  document.getElementById('statArticles').textContent = newsCount || '—';
-  document.getElementById('statCases').textContent    = caseCount || '—';
-
+  var newsCount=ALL_ARTICLES.filter(function(a){return a.type!=='case';}).length;
+  var caseCount=ALL_ARTICLES.filter(function(a){return a.type==='case';}).length;
+  document.getElementById('statArticles').textContent=newsCount||'-';
+  document.getElementById('statCases').textContent=caseCount||'-';
   applyFilters();
 }
 
 loadArticles();
+
 </script>
 </body>
 </html>
