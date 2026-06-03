@@ -540,7 +540,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 </div>
 
 <script>
-const SHEETS_API = 'https://script.google.com/macros/s/AKfycbxPfBYDEE9eiI1CdZ0UtbVlYmlu9l83Uu2vPLaePdqLUSg-MlPO5Sek_dsWIvL1euFT/exec';
+const SHEETS_API = 'https://script.google.com/macros/s/AKfycbwKSB_5Ow2hVR8ROwLpINNLFXd1vlBcP1AWGZiVnLqbVKT3pXH1X7QglIUxcRT1UajRmw/exec';
 let ALL_ARTICLES = [];
 let currentFilter = 'all';
 let currentType = 'news';
@@ -798,47 +798,76 @@ function subscribeNewsletter(){
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-// FETCH DATA
+// FETCH DATA — gọi cả articles + cases cùng lúc
 async function loadArticles(){
-  try {
-    const res = await fetch(SHEETS_API);
-    const data = await res.json();
-    if(data.ok&&data.articles&&data.articles.length>0){
-      ALL_ARTICLES = data.articles.map(a=>({
-        slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',
-        body:a.body||'',tag:a.tag||'thi-truong',type:a.type||'news',
-        date:a.date||'',readTime:a.readTime||'',
-        sourceUrl:a.sourceUrl||'',imageUrl:a.imageUrl||'',
-        insight:a.insight||'',
-        keyTakeaways:a.keyTakeaways||(a.key_takeaways?a.key_takeaways.split('|'):[]),
-        importanceScore:a.importanceScore||a.importance_score||0,
-        businessScore:a.businessScore||a.business_impact_score||0,
-        investorScore:a.investorScore||a.investor_relevance_score||0,
-        viralityScore:a.viralityScore||a.virality_score||0,
-      }));
-    } else { ALL_ARTICLES = SAMPLE; }
-  } catch(e){ ALL_ARTICLES = SAMPLE; }
+  const mapArt = (a) => ({
+    slug:           a.slug||'',
+    title:          a.title||'',
+    excerpt:        a.excerpt||'',
+    body:           a.body||'',
+    tag:            (a.tag||'thi-truong').trim().toLowerCase(),
+    type:           a.type||'news',
+    date:           a.date||'',
+    readTime:       a.readTime||a.read_time||'',
+    sourceUrl:      a.sourceUrl||a.source_url||'',
+    imageUrl:       a.imageUrl||a.image_url||'',
+    insight:        a.insight||'',
+    keyTakeaways:   Array.isArray(a.keyTakeaways) ? a.keyTakeaways :
+                    (a.key_takeaways||'').split('|').map(s=>s.trim()).filter(Boolean),
+    importanceScore:Number(a.importanceScore||a.importance_score)||0,
+    businessScore:  Number(a.businessScore||a.business_impact_score)||0,
+    investorScore:  Number(a.investorScore||a.investor_relevance_score)||0,
+    viralityScore:  Number(a.viralityScore||a.virality_score)||0,
+  });
 
-  // Update stats
-  const news = ALL_ARTICLES.filter(a=>(a.type||'news')!=='case');
-  const cases = ALL_ARTICLES.filter(a=>a.type==='case');
-  document.getElementById('statArticles').textContent = news.length||'—';
-  document.getElementById('statCases').textContent = cases.length||'—';
+  const mapCase = (a) => ({
+    slug:           a.slug||'',
+    title:          a.title||'',
+    excerpt:        a.excerpt||'',
+    body:           a.body||'',
+    tag:            (a.tag||'ma').trim().toLowerCase(),
+    type:           'case',
+    date:           a.date||'',
+    readTime:       a.readTime||a.read_time||'',
+    sourceUrl:      a.sourceUrl||a.source_url||'',
+    imageUrl:       a.imageUrl||a.image_url||'',
+    insight:        a.insight||'',
+    keyTakeaways:   Array.isArray(a.keyTakeaways) ? a.keyTakeaways :
+                    (a.key_takeaways||'').split('|').map(s=>s.trim()).filter(Boolean),
+    importanceScore:Number(a.importanceScore)||0,
+    businessScore:  Number(a.businessScore)||0,
+    investorScore:  0,
+    viralityScore:  Number(a.viralityScore)||0,
+  });
+
+  try {
+    const [artRes, caseRes] = await Promise.all([
+      fetch(SHEETS_API + '?action=articles&limit=50&status=published'),
+      fetch(SHEETS_API + '?action=cases&limit=20')
+    ]);
+    const artData  = await artRes.json();
+    const caseData = await caseRes.json();
+
+    const arts  = (artData.ok  && artData.articles && artData.articles.length)
+                  ? artData.articles.map(mapArt) : [];
+    const cases = (caseData.ok && caseData.cases   && caseData.cases.length)
+                  ? caseData.cases.map(mapCase) : [];
+
+    ALL_ARTICLES = [...arts, ...cases];
+    if(!ALL_ARTICLES.length) ALL_ARTICLES = SAMPLE;
+
+  } catch(e){
+    console.error('Load error:', e);
+    ALL_ARTICLES = SAMPLE;
+  }
+
+  const newsCount = ALL_ARTICLES.filter(a=>a.type!=='case').length;
+  const caseCount = ALL_ARTICLES.filter(a=>a.type==='case').length;
+  document.getElementById('statArticles').textContent = newsCount || '—';
+  document.getElementById('statCases').textContent    = caseCount || '—';
 
   applyFilters();
 }
-
-// SAMPLE DATA (updated with new tags)
-const SAMPLE = [
-  {slug:'sample-1',title:'Làn sóng M&A ngành F&B 2026: Cơ hội bứt phá cho SME Việt',excerpt:'Năm 2026 đánh dấu một bước chuyển mình mạnh mẽ trong bức tranh mua bán sáp nhập ngành F&B tại Việt Nam.',body:'Năm 2026 đánh dấu một bước chuyển mình mạnh mẽ...\n\n## 1. Bức tranh thị trường\n\nNgành thực phẩm và đồ uống Việt Nam đang hút vốn ngoại từ Nhật Bản, Hàn Quốc và Singapore.\n\n## 2. Bài học cho SME\n\nDoanh nghiệp cần chuẩn bị hồ sơ pháp lý và định giá đúng trước khi tiếp xúc nhà đầu tư.',tag:'ma',type:'news',date:'2 tháng 6, 2026',readTime:'6 phút đọc',sourceUrl:'https://cafef.vn',imageUrl:'',importanceScore:8,businessScore:9,investorScore:8,viralityScore:7,keyTakeaways:['M&A ngành F&B tăng 40% so với 2025','Nhà đầu tư Nhật và Hàn dẫn đầu xu hướng','SME cần chuẩn hóa hồ sơ tài chính trước khi tiếp xúc'],insight:'Đây là thời điểm vàng để doanh nghiệp F&B có revenue 50–200 tỷ chuẩn bị cho exit hoặc gọi vốn chiến lược.'},
-  {slug:'sample-2',title:'EV/EBITDA — Chỉ số định giá quan trọng nhất khi bán doanh nghiệp',excerpt:'Phương pháp EV/EBITDA đang trở thành chuẩn mực định giá SME Việt Nam.',body:'EV/EBITDA là chỉ số tài chính không quan tâm đến cấu trúc vốn...\n\n## Tại sao EV/EBITDA quan trọng?\n\nNhà đầu tư dùng EBITDA để loại bỏ biến động từ khấu hao và thuế, cho một cái nhìn khách quan hơn về khả năng sinh lời.',tag:'dinh-gia',type:'news',date:'31 tháng 5, 2026',readTime:'5 phút đọc',sourceUrl:'https://vneconomy.vn',imageUrl:'',importanceScore:7,businessScore:8,investorScore:9,viralityScore:6,keyTakeaways:['EV/EBITDA bình quân ngành bán lẻ VN: 7.2x','Công thức tính: Enterprise Value / EBITDA','Ngành công nghệ có EV/EBITDA cao hơn 15–25x']},
-  {slug:'sample-cong-nghe-1',title:'AI trong Doanh Nghiệp Việt: 8 Startup Gọi Vốn Thành Công Q1/2026',excerpt:'Làn sóng ứng dụng AI vào vận hành doanh nghiệp đang bùng nổ tại Việt Nam với 8 startup công nghệ gọi vốn Series A thành công.',body:'Quý đầu năm 2026 chứng kiến làn sóng đầu tư mạnh mẽ vào AI...\n\n## Xu hướng chủ đạo\n\nCác startup AI Việt tập trung vào: AI cho tài chính, AI cho logistics, và AI cho HR automation.\n\n## Cơ hội cho doanh nghiệp\n\nSME Việt Nam có thể tiếp cận các giải pháp AI với chi phí thấp hơn 60% so với các công cụ quốc tế.',tag:'cong-nghe',type:'news',date:'1 tháng 6, 2026',readTime:'7 phút đọc',sourceUrl:'https://dantri.com.vn',imageUrl:'',importanceScore:8,businessScore:8,investorScore:9,viralityScore:9,keyTakeaways:['8 startup AI Việt gọi vốn thành công Q1/2026','Tổng vốn huy động đạt 45 triệu USD','AI trong logistics và HR là xu hướng dẫn đầu','Chi phí triển khai giảm 60% so với giải pháp ngoại'],insight:'Cơ hội vàng cho doanh nghiệp vừa và nhỏ đầu tư vào AI để tạo lợi thế cạnh tranh bền vững.'},
-  {slug:'sample-tai-chinh-1',title:'Fintech Việt Nam 2026: Vốn Hóa 4.2 Tỷ USD, Tăng 38% So Với 2025',excerpt:'Ngành tài chính công nghệ Việt Nam đang bứt phá mạnh mẽ với sự tham gia của nhiều tập đoàn ngoại và xu hướng embedded finance.',body:'Báo cáo Fintech Việt Nam 2026 vừa được công bố...\n\n## Những con số ấn tượng\n\nTổng vốn hóa ngành Fintech đạt 4.2 tỷ USD, tăng 38% so với 2025. Số người dùng thanh toán số đạt 67 triệu người.\n\n## Embedded Finance - xu hướng mới\n\nCác doanh nghiệp phi tài chính đang tích hợp dịch vụ tài chính trực tiếp vào nền tảng của mình.',tag:'tai-chinh',type:'news',date:'2 tháng 6, 2026',readTime:'8 phút đọc',sourceUrl:'https://vneconomy.vn',imageUrl:'',importanceScore:9,businessScore:8,investorScore:9,viralityScore:8,keyTakeaways:['Vốn hóa Fintech VN: 4.2 tỷ USD (+38%)','67 triệu người dùng thanh toán số','Embedded Finance là xu hướng chủ đạo 2026','Cơ hội lớn cho doanh nghiệp tích hợp tài chính'],insight:'Fintech Việt Nam đang bước vào giai đoạn trưởng thành - cơ hội M&A và đầu tư rất hấp dẫn.'},
-  {slug:'sample-3',title:'Holding Company — Tại Sao 70% Doanh Nhân Thành Công Chọn Mô Hình Này?',excerpt:'Cấu trúc Holding không chỉ tối ưu thuế — đó là nền tảng để gọi vốn chuyên nghiệp và quản trị minh bạch.',body:'Holding company là mô hình công ty mẹ nắm giữ cổ phần...',tag:'holding',type:'news',date:'30 tháng 5, 2026',readTime:'8 phút đọc',sourceUrl:'https://tuoitre.vn',imageUrl:'',importanceScore:8,businessScore:9,investorScore:8,viralityScore:7},
-  {slug:'sample-4',title:'IPO Việt Nam Q2/2026: 12 Doanh Nghiệp Đăng Ký Niêm Yết',excerpt:'Danh sách 12 doanh nghiệp đăng ký IPO trong quý 2/2026 với tổng vốn hóa dự kiến vượt 15,000 tỷ đồng.',body:'Thị trường IPO Việt Nam đang sôi động trở lại...',tag:'ipo',type:'news',date:'29 tháng 5, 2026',readTime:'5 phút đọc',sourceUrl:'https://cafef.vn',imageUrl:'',importanceScore:7,businessScore:7,investorScore:9,viralityScore:6},
-  {slug:'sample-5',title:'VN-Index Vượt 1,280: Tín Hiệu Tích Cực Hay Bẫy Tăng Giả?',excerpt:'Chỉ số VN-Index đã vượt ngưỡng tâm lý 1,280 điểm trong tuần qua. Phân tích kỹ thuật và cơ bản cho thấy gì?',body:'VN-Index đóng cửa phiên cuối tuần tại 1,284 điểm...',tag:'thi-truong',type:'news',date:'28 tháng 5, 2026',readTime:'6 phút đọc',sourceUrl:'https://nhipsongdoanhnhan.vn',imageUrl:'',importanceScore:7,businessScore:6,investorScore:8,viralityScore:8},
-  {slug:'sample-case-1',title:'Case Study: Grab IPO — Bài Học Cấu Trúc Holding Cho Startup Đông Nam Á',excerpt:'Grab chọn SPAC thay vì IPO truyền thống — quyết định gây tranh cãi nhưng chứa đựng bài học sâu sắc về cấu trúc Holding.',body:'## 1. Bối cảnh thương vụ\n\nGrab Technologies niêm yết tại Nasdaq năm 2021 thông qua SPAC với định giá 39.6 tỷ USD...\n\n## 2. Cấu trúc thương vụ\n\nGrab dùng cấu trúc Cayman Islands Holding để tối ưu thuế và thu hút nhà đầu tư quốc tế.\n\n## 3. Bài học cho SME Việt Nam\n\nCấu trúc Holding ít nhất 18 tháng trước khi gọi vốn quốc tế.',tag:'ipo',type:'case',date:'1 tháng 6, 2026',readTime:'12 phút đọc',sourceUrl:'https://techcrunch.com',imageUrl:'',importanceScore:9,businessScore:9,investorScore:9,viralityScore:8,keyTakeaways:['Grab chọn SPAC: định giá 39.6 tỷ USD','Cấu trúc Cayman Islands Holding tối ưu thuế','Bài học: chuẩn bị Holding ít nhất 18 tháng trước','Tránh lỗi common: thiếu audit trail và governance']},
-];
 
 loadArticles();
 </script>
