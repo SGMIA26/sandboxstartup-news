@@ -371,16 +371,15 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 <div class="nav-bar">
   <div class="nav-inner">
     <span class="nav-item active" data-filter="all" data-type="news">Tất Cả</span>
-    <span class="nav-item" data-filter="ma" data-type="news">M&A</span>
-    <span class="nav-item" data-filter="dinh-gia" data-type="news">Định Giá</span>
-    <span class="nav-item" data-filter="holding" data-type="news">Holding</span>
-    <span class="nav-item" data-filter="thue" data-type="news">Thuế & Pháp Lý</span>
-    <span class="nav-item" data-filter="thi-truong" data-type="news">Thị Trường</span>
-    <span class="nav-item" data-filter="ipo" data-type="news">IPO</span>
-    <span class="nav-item" data-filter="startup" data-type="news">Startup</span>
-    <div class="nav-divider"></div>
-    <span class="nav-item" data-filter="cong-nghe" data-type="news">💻 Công Nghệ</span>
+    <span class="nav-item" data-filter="thi-truong" data-type="news">📈 Thị Trường</span>
     <span class="nav-item" data-filter="tai-chinh" data-type="news">💰 Tài Chính</span>
+    <span class="nav-item" data-filter="ma" data-type="news">🤝 M&A</span>
+    <span class="nav-item" data-filter="holding" data-type="news">🏛️ Holding</span>
+    <span class="nav-item" data-filter="thue" data-type="news">⚖️ Thuế & Pháp Lý</span>
+    <span class="nav-item" data-filter="ipo" data-type="news">🚀 IPO</span>
+    <span class="nav-item" data-filter="startup" data-type="news">💡 Startup</span>
+    <span class="nav-item" data-filter="cong-nghe" data-type="news">💻 Công Nghệ</span>
+    <span class="nav-item" data-filter="dinh-gia" data-type="news">📊 Định Giá</span>
     <div class="nav-divider"></div>
     <span class="nav-item" data-filter="case" data-type="case">📚 Case Study</span>
     <div class="nav-search"><input type="text" placeholder="Tìm kiếm..." id="searchInput"></div>
@@ -540,7 +539,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 </div>
 
 <script>
-const SHEETS_API = 'https://script.google.com/macros/s/AKfycbwKSB_5Ow2hVR8ROwLpINNLFXd1vlBcP1AWGZiVnLqbVKT3pXH1X7QglIUxcRT1UajRmw/exec';
+const SHEETS_API = 'https://script.google.com/macros/s/AKfycbxPfBYDEE9eiI1CdZ0UtbVlYmlu9l83Uu2vPLaePdqLUSg-MlPO5Sek_dsWIvL1euFT/exec';
 let ALL_ARTICLES = [];
 let currentFilter = 'all';
 let currentType = 'news';
@@ -550,12 +549,19 @@ let currentArticle = null;
 const TAG_LABEL = {
   ma:'M&A','dinh-gia':'Định giá',holding:'Holding',thue:'Thuế & Pháp lý',
   'thi-truong':'Thị trường',ipo:'IPO',startup:'Startup',case:'Case Study',
-  finance:'Tài chính','cong-nghe':'Công Nghệ','tai-chinh':'Tài Chính'
+  finance:'Tài chính','cong-nghe':'Công Nghệ','tai-chinh':'Tài Chính',
+  // Aliases từ AI tạo ra
+  'chung-khoan':'Thị trường','chứng khoán':'Thị trường',
+  'cong-nghe-thong-tin':'Công Nghệ','fintech':'Tài Chính',
+  'kinh-doanh':'Thị trường','dau-tu':'M&A','ngan-hang':'Tài Chính',
+  'bat-dong-san':'Thị trường','phap-ly':'Thuế & Pháp lý',
 };
 const BADGE_CLASS = {
   ma:'badge-ma','dinh-gia':'badge-dinh-gia',holding:'badge-holding',thue:'badge-thue',
   'thi-truong':'badge-thi-truong',ipo:'badge-ipo',startup:'badge-startup',case:'badge-case',
-  finance:'badge-finance','cong-nghe':'badge-cong-nghe','tai-chinh':'badge-tai-chinh'
+  finance:'badge-tai-chinh','cong-nghe':'badge-cong-nghe','tai-chinh':'badge-tai-chinh',
+  'chung-khoan':'badge-thi-truong','fintech':'badge-tai-chinh',
+  'kinh-doanh':'badge-thi-truong','dau-tu':'badge-ma','ngan-hang':'badge-tai-chinh',
 };
 const SECTION_ACCENT = {
   'cong-nghe':'tech','tai-chinh':'fin'
@@ -594,7 +600,13 @@ function markdownToHtml(text){
 }
 
 function badgeHtml(tag){ return `<span class="badge ${BADGE_CLASS[tag]||'badge-ma'}">${TAG_LABEL[tag]||tag}</span>`; }
-function thumbHtml(url,cls){ return url?`<img class="${cls}" src="${url}" alt="" onerror="this.style.display='none'">`:`<div class="${cls}-ph">SANDBOX NEWS</div>`; }
+function thumbHtml(url,cls){
+  // Thử lấy ảnh từ URL, nếu lỗi dùng placeholder đẹp
+  if(url && url.startsWith('http')){
+    return `<img class="${cls}" src="${url}" alt="" onerror="this.parentElement.querySelector('.${cls}-ph') && (this.style.display='none') || (this.outerHTML='<div class=\"${cls}-ph\">SANDBOX NEWS</div>')">`;
+  }
+  return `<div class="${cls}-ph">SANDBOX NEWS</div>`;
+}
 
 // Score pills
 function scorePillsHtml(a){
