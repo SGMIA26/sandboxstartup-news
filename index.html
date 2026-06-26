@@ -733,7 +733,7 @@ var TAG_GROUPS = {
 function getFiltered(){
   return ALL_ARTICLES.filter(function(a){
     var type = a.type||'news';
-    var tag = a.tag||'thi-truong';
+    var tag = a.tagss||'thi-truong';
     var isCase = type==='case';
 
     // Match type
@@ -791,7 +791,7 @@ function renderHero(articles){
   }).join('');
   hero.innerHTML='<div class="hero" style="padding:2.5rem 0"><div class="hero-grid">'
     +'<div class="hero-main">'+thumbHtml(a.imageUrl,'hero-thumb')
-    +badgeHtml(a.tag)
+    +badgeHtml(a.tagss)
     +'<div class="hero-title" onclick="openModal(\''+a.slug+'\')">'+(a.title||'')+'</div>'
     +'<div class="hero-excerpt">'+(a.excerpt||'')+'</div>'
     +'<div class="hero-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span class="sep">-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="sep">-</span><span style="color:var(--gold);font-size:10px">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
@@ -808,7 +808,7 @@ function renderGrid(articles){
   grid.innerHTML = list.map(function(a){
     return '<div class="art-card" onclick="openModal(\''+a.slug+'\')">'
       +thumbHtml(a.imageUrl,'art-thumb')
-      +badgeHtml(a.tag)
+      +badgeHtml(a.tags)
       +'<div class="art-title">'+(a.title||'')+'</div>'
       +'<div class="art-excerpt">'+(a.excerpt||'')+'</div>'
       +'<div class="art-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="art-source">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
@@ -822,7 +822,7 @@ function renderCases(cases){
   list.innerHTML = cases.map(function(a){
     return '<div class="case-card" onclick="openModal(\''+a.slug+'\')">'
       +(a.imageUrl?'<img class="case-thumb-sm" src="'+a.imageUrl+'" alt="">':'<div class="case-thumb-ph">CASE</div>')
-      +'<div>'+badgeHtml(a.tag)+'<div class="case-title">'+(a.title||'')+'</div>'
+      +'<div>'+badgeHtml(a.tags)+'<div class="case-title">'+(a.title||'')+'</div>'
       +'<div class="case-excerpt">'+(a.excerpt||'')+'</div>'
       +'<div class="case-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span></div>'
       +'</div></div>';
@@ -840,7 +840,7 @@ function openModal(slug){
   if(ogImg && a.imageUrl) ogImg.setAttribute('content', a.imageUrl);
   if(ogTitle && a.title) ogTitle.setAttribute('content', a.title + ' — Sandbox News');
   if(ogDesc && a.excerpt) ogDesc.setAttribute('content', a.excerpt.substring(0,160));
-  document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
+  document.getElementById('modalCat').textContent = TAG_LABEL[a.tags]||a.tags;
   document.getElementById('modalTitle').textContent = a.title||'';
   document.getElementById('modalMeta').innerHTML = '<span>'+(a.date||'')+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span>-</span><a class="modal-source-link" href="'+a.sourceUrl+'" target="_blank">Xem nguon goc</a>':'');
   document.getElementById('modalThumb').innerHTML = a.imageUrl?'<img class="modal-hero-img" src="'+a.imageUrl+'" alt="'+(a.title||'')+'">':'<div class="modal-hero-ph">SANDBOX NEWS</div>';
@@ -932,7 +932,7 @@ const SAMPLE = [
 async function loadArticles(){
   var mapArt = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tag||'thi-truong').split('|')[0].trim().toLowerCase(),type:a.type||'news',
+    tag:(a.tags||'thi-truong').split('|')[0].trim().toLowerCase(),type:a.type||'news',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
@@ -945,7 +945,7 @@ async function loadArticles(){
   };};
   var mapCase = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tag||'ma').split('|')[0].trim().toLowerCase(),type:'case',
+    tag:(a.tags||'ma').split('|')[0].trim().toLowerCase(),type:'case',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
