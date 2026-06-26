@@ -74,9 +74,25 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 .nav-inner::-webkit-scrollbar{display:none}
 .nav-item{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:.75rem 1rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;flex-shrink:0}
 .nav-item:hover{color:var(--ink);border-bottom-color:var(--gold)}
-.nav-parent{font-weight:600;}
-.nav-child{font-size:10px !important;padding:.4rem .7rem !important;opacity:.85;display:none !important;}
+.nav-parent{font-weight:600;position:relative;}
+.nav-parent::after{content:'▾';margin-left:3px;font-size:9px;transition:transform .2s;}
+.nav-parent.open::after{transform:rotate(180deg);}
+.nav-child{
+  font-size:10px !important;
+  padding:.35rem .65rem !important;
+  opacity:.85;
+  display:none !important;
+  background:var(--surface-0) !important;
+  border:0.5px solid var(--border) !important;
+  border-radius:6px !important;
+  margin:2px 2px 0 2px !important;
+}
 .nav-child.visible{display:inline-flex !important;}
+.nav-child.active{
+  background:var(--bg-accent) !important;
+  border-color:var(--border-accent) !important;
+  color:var(--text-accent) !important;
+}
 .nav-item.active{color:var(--gold);border-bottom-color:var(--gold)}
 /* Tag-specific active colors */
 .nav-item[data-filter="cong-nghe"].active{color:var(--tech);border-bottom-color:var(--tech)}
@@ -373,7 +389,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;f
 <!-- NAV -->
 <div class="nav-bar">
   <div class="nav-inner">
-    <span class="nav-item active" data-filter="all" data-type="news">Tất Cả</span>
+    <span class="nav-item active" data-filter="all" data-type="news">Tin Mới</span>
     <span class="nav-item" data-filter="ma" data-type="news">🤝 M&A</span>
     <span class="nav-item nav-parent" data-filter="chung-khoan" data-type="news">📈 Chứng Khoán ▾</span>
     <span class="nav-item nav-child" data-filter="holding" data-type="news" data-parent="chung-khoan">🏛️ Holding</span>
@@ -647,30 +663,56 @@ document.querySelectorAll('.nav-item[data-filter]').forEach(function(el){
     var filter = el.dataset.filter;
     var type = el.dataset.type;
     var isParent = el.classList.contains('nav-parent');
+    var isChild = el.classList.contains('nav-child');
 
-    // Toggle children nếu là parent
     if(isParent){
+      // Toggle dropdown
       var children = document.querySelectorAll('.nav-child[data-parent="'+filter+'"]');
-      var isOpen = children[0] && children[0].classList.contains('visible');
-      // Ẩn tất cả children trước
-      document.querySelectorAll('.nav-child').forEach(function(c){ c.classList.remove('visible'); });
+      var isOpen = el.classList.contains('open');
+
+      // Đóng tất cả parent khác
+      document.querySelectorAll('.nav-parent').forEach(function(p){
+        p.classList.remove('open');
+      });
+      document.querySelectorAll('.nav-child').forEach(function(c){
+        c.classList.remove('visible');
+      });
+
       if(!isOpen){
+        // Mở dropdown này
+        el.classList.add('open');
         children.forEach(function(c){ c.classList.add('visible'); });
       }
-    } else {
-      // Ẩn tất cả children nếu click vào non-parent
-      if(!el.classList.contains('nav-child')){
-        document.querySelectorAll('.nav-child').forEach(function(c){ c.classList.remove('visible'); });
-      }
+
+    } else if(!isChild){
+      // Click vào tab thường → đóng tất cả dropdown
+      document.querySelectorAll('.nav-parent').forEach(function(p){
+        p.classList.remove('open');
+      });
+      document.querySelectorAll('.nav-child').forEach(function(c){
+        c.classList.remove('visible');
+      });
     }
 
-    // Set active
+    // Set active — chỉ set active cho non-parent hoặc child
     document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
     el.classList.add('active');
+
+    // Nếu click parent → không filter, chỉ toggle dropdown
+    if(isParent) return;
+
     currentFilter = filter;
     currentType = type || 'news';
     applyFilters();
   });
+});
+
+// Đóng dropdown khi click ra ngoài
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.nav-item')){
+    document.querySelectorAll('.nav-parent').forEach(function(p){ p.classList.remove('open'); });
+    document.querySelectorAll('.nav-child').forEach(function(c){ c.classList.remove('visible'); });
+  }
 });
 document.getElementById('searchInput').addEventListener('input',function(e){
   currentSearch = e.target.value.toLowerCase().trim();
