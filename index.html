@@ -733,7 +733,7 @@ var TAG_GROUPS = {
 function getFiltered(){
   return ALL_ARTICLES.filter(function(a){
     var type = a.type||'news';
-    var tag = a.tagss||'thi-truong';
+    var tag = a.tag||'thi-truong';
     var isCase = type==='case';
 
     // Match type
@@ -743,8 +743,18 @@ function getFiltered(){
     var matchFilter = false;
     if(currentFilter==='all') matchFilter = true;
     else if(currentFilter==='case') matchFilter = isCase;
-    else if(TAG_GROUPS[currentFilter]) matchFilter = TAG_GROUPS[currentFilter].indexOf(tag)>-1;
-    else matchFilter = tag===currentFilter;
+    else {
+      // Multi-tag: kiểm tra trong tags array trước, fallback về tag đơn
+      var tagsArr = Array.isArray(a.tags) ? a.tags : [tag];
+      if(TAG_GROUPS[currentFilter]) {
+        // Parent tab: match nếu bài có bất kỳ tag con nào hoặc chính parent tag
+        var groupTags = TAG_GROUPS[currentFilter].concat([currentFilter]);
+        matchFilter = tagsArr.some(function(t){ return groupTags.indexOf(t)>-1; });
+      } else {
+        // Leaf tab: match nếu tags chứa filter hiện tại
+        matchFilter = tagsArr.indexOf(currentFilter) > -1;
+      }
+    }
 
     // Match search
     var matchQ = !currentSearch||
@@ -791,7 +801,7 @@ function renderHero(articles){
   }).join('');
   hero.innerHTML='<div class="hero" style="padding:2.5rem 0"><div class="hero-grid">'
     +'<div class="hero-main">'+thumbHtml(a.imageUrl,'hero-thumb')
-    +badgeHtml(a.tagss)
+    +badgeHtml(a.tag)
     +'<div class="hero-title" onclick="openModal(\''+a.slug+'\')">'+(a.title||'')+'</div>'
     +'<div class="hero-excerpt">'+(a.excerpt||'')+'</div>'
     +'<div class="hero-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span class="sep">-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="sep">-</span><span style="color:var(--gold);font-size:10px">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
@@ -808,7 +818,7 @@ function renderGrid(articles){
   grid.innerHTML = list.map(function(a){
     return '<div class="art-card" onclick="openModal(\''+a.slug+'\')">'
       +thumbHtml(a.imageUrl,'art-thumb')
-      +badgeHtml(a.tags)
+      +badgeHtml(a.tag)
       +'<div class="art-title">'+(a.title||'')+'</div>'
       +'<div class="art-excerpt">'+(a.excerpt||'')+'</div>'
       +'<div class="art-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span class="art-source">'+a.sourceUrl.replace(/https?:\/\//,'').split('/')[0]+'</span>':'')+'</div>'
@@ -822,7 +832,7 @@ function renderCases(cases){
   list.innerHTML = cases.map(function(a){
     return '<div class="case-card" onclick="openModal(\''+a.slug+'\')">'
       +(a.imageUrl?'<img class="case-thumb-sm" src="'+a.imageUrl+'" alt="">':'<div class="case-thumb-ph">CASE</div>')
-      +'<div>'+badgeHtml(a.tags)+'<div class="case-title">'+(a.title||'')+'</div>'
+      +'<div>'+badgeHtml(a.tag)+'<div class="case-title">'+(a.title||'')+'</div>'
       +'<div class="case-excerpt">'+(a.excerpt||'')+'</div>'
       +'<div class="case-meta"><span>'+(timeAgo(a.createdAt||a.date||''))+'</span><span>-</span><span>'+(a.readTime||'')+'</span></div>'
       +'</div></div>';
@@ -840,7 +850,7 @@ function openModal(slug){
   if(ogImg && a.imageUrl) ogImg.setAttribute('content', a.imageUrl);
   if(ogTitle && a.title) ogTitle.setAttribute('content', a.title + ' — Sandbox News');
   if(ogDesc && a.excerpt) ogDesc.setAttribute('content', a.excerpt.substring(0,160));
-  document.getElementById('modalCat').textContent = TAG_LABEL[a.tags]||a.tags;
+  document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
   document.getElementById('modalTitle').textContent = a.title||'';
   document.getElementById('modalMeta').innerHTML = '<span>'+(a.date||'')+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span>-</span><a class="modal-source-link" href="'+a.sourceUrl+'" target="_blank">Xem nguon goc</a>':'');
   document.getElementById('modalThumb').innerHTML = a.imageUrl?'<img class="modal-hero-img" src="'+a.imageUrl+'" alt="'+(a.title||'')+'">':'<div class="modal-hero-ph">SANDBOX NEWS</div>';
@@ -932,7 +942,7 @@ const SAMPLE = [
 async function loadArticles(){
   var mapArt = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tags||'thi-truong').split('|')[0].trim().toLowerCase(),type:a.type||'news',
+    tag:(a.tag||'thi-truong').split('|')[0].trim().toLowerCase(),type:a.type||'news',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
@@ -945,25 +955,33 @@ async function loadArticles(){
   };};
   var mapCase = function(a){return {
     slug:a.slug||'',title:a.title||'',excerpt:a.excerpt||'',body:a.body||'',
-    tag:(a.tags||'ma').split('|')[0].trim().toLowerCase(),type:'case',
+    tag:(a.tag||'ma').split('|')[0].trim().toLowerCase(),type:'case',
     date:a.date||'',readTime:a.readTime||a.read_time||'',
     sourceUrl:a.sourceUrl||a.source_url||'',imageUrl:a.imageUrl||a.image_url||'',
     insight:a.insight||'',
     keyTakeaways:Array.isArray(a.keyTakeaways)?a.keyTakeaways:[],
     importanceScore:Number(a.importanceScore)||0,businessScore:Number(a.businessScore)||0,
     investorScore:0,viralityScore:Number(a.viralityScore)||0,
-    createdAt:a.createdAt||a.created_at||'',
+    createdAt:a.createdAt||a.created_at||a.date||'',
+    tags:Array.isArray(a.tags)?a.tags:(a.tag?[a.tag]:['thi-truong']),
   };};
   try{
-    var results = await Promise.all([
-      fetch(SHEETS_API+'?action=articles&limit=50&status=published'),
-      fetch(SHEETS_API+'?action=cases&limit=20')
-    ]);
-    var artData = await results[0].json();
-    var caseData = await results[1].json();
+    // JSONP helper — Apps Script CORS workaround
+    function jsonp(url){
+      return new Promise(function(resolve,reject){
+        var cb='_sb'+Date.now()+Math.floor(Math.random()*9999);
+        window[cb]=function(data){ resolve(data); delete window[cb]; s.remove(); };
+        var s=document.createElement('script');
+        s.src=url+'&callback='+cb;
+        s.onerror=function(){ reject(new Error('JSONP fail')); delete window[cb]; s.remove(); };
+        document.head.appendChild(s);
+      });
+    }
+    var artData  = await jsonp(SHEETS_API+'?action=getArticles&limit=100');
+    var caseData = await jsonp(SHEETS_API+'?action=getCases&limit=50');
     console.log('[SandboxNews] articles:',artData.total,'cases:',caseData.total||0);
-    var arts=(artData.ok&&artData.articles&&artData.articles.length)?artData.articles.map(mapArt):[];
-    var cases=(caseData.ok&&caseData.cases&&caseData.cases.length)?caseData.cases.map(mapCase):[];
+    var arts=(artData.articles&&artData.articles.length)?artData.articles.map(mapArt):[];
+    var cases=(caseData.cases&&caseData.cases.length)?caseData.cases.map(mapCase):[];
     ALL_ARTICLES=[].concat(arts,cases);
     if(!ALL_ARTICLES.length) ALL_ARTICLES=SAMPLE;
   }catch(e){
