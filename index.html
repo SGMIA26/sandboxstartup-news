@@ -853,7 +853,8 @@ function openModal(slug){
   document.getElementById('modalCat').textContent = TAG_LABEL[a.tag]||a.tag;
   document.getElementById('modalTitle').textContent = a.title||'';
   document.getElementById('modalMeta').innerHTML = '<span>'+(a.date||'')+'</span><span>-</span><span>'+(a.readTime||'')+'</span>'+(a.sourceUrl?'<span>-</span><a class="modal-source-link" href="'+a.sourceUrl+'" target="_blank">Xem nguon goc</a>':'');
-  document.getElementById('modalThumb').innerHTML = a.imageUrl?'<img class="modal-hero-img" src="'+a.imageUrl+'" alt="'+(a.title||'')+'">':'<div class="modal-hero-ph">SANDBOX NEWS</div>';
+  var mImgUrl = a.imageUrl ? 'https://wsrv.nl/?url='+encodeURIComponent(a.imageUrl)+'&w=1200&output=webp&q=85' : '';
+  document.getElementById('modalThumb').innerHTML = mImgUrl?'<img class="modal-hero-img" src="'+mImgUrl+'" onerror="this.onerror=null;this.src=\''+a.imageUrl+'\';" alt="'+(a.title||'')+'">':'<div class="modal-hero-ph">SANDBOX NEWS</div>';
   var bodyContent = a.body||a.excerpt||'';
   document.getElementById('modalBody').innerHTML = bodyContent ? markdownToHtml(bodyContent) : '<p style="color:var(--ink-3);font-style:italic">Noi dung dang duoc cap nhat. <a href="'+(a.sourceUrl||'#')+'" target="_blank" style="color:var(--gold)">Xem bai goc</a></p>';
   document.getElementById('modalSource').innerHTML = a.sourceUrl?'Nguon tham khao: <a href="'+a.sourceUrl+'" target="_blank" style="color:var(--gold)">'+a.sourceUrl+'</a>':'';
